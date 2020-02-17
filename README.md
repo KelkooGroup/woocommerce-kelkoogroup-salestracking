@@ -1,4 +1,4 @@
-# Kelkoo Sales Tracking for Woocommerce
+# Kelkoogroup Sales Tracking for Woocommerce
 
 Track your orders in Kelkoo.
 - Easy set-up in settings.
