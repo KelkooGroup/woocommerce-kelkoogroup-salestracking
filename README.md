@@ -6,7 +6,7 @@ Track your orders in Kelkoo.
 
 ## Installation
 
-- Upload `wordpress-kelkoogroup-salestracking` to the `/wp-content/plugins/` directory
+- Upload `woocommerce-kelkoogroup-salestracking` to the `/wp-content/plugins/` directory
 - Activate the plugin through the 'Plugins' menu in WordPress
 - Done!
 
