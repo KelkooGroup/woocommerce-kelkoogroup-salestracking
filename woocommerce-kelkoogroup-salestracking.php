@@ -35,7 +35,6 @@ final class Kelkoogroup_SalesTracking {
 		add_action( 'init', array( $this, 'kelkoogroup_salestracking_setup' ), -1 );
 		require_once( 'inc/functions.php' );
 		require_once( 'admin/class-kelkoogroup-salestracking-admin.php');
-
 	}
 
 	/**
@@ -44,9 +43,8 @@ final class Kelkoogroup_SalesTracking {
 	public function kelkoogroup_salestracking_setup() {
 		add_filter( 'wc_get_template',    array( $this, 'kelkoogroup_salestracking_wc_get_template' ), 11, 5 );
 		add_action( 'admin_menu', 'kelkoogroup_salestracking_add_admin_menu' );
-        add_action( 'admin_init', 'kelkoogroup_salestracking_settings_init' );
-        add_action( 'plugin_action_links_' . plugin_basename( __FILE__ ), 'kelkoogroup_action_links' );
-
+        	add_action( 'admin_init', 'kelkoogroup_salestracking_settings_init' );
+        	add_action( 'plugin_action_links_' . plugin_basename( __FILE__ ), 'kelkoogroup_action_links' );
 	}
 
 	/**
