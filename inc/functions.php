@@ -2,8 +2,8 @@
 /**
  * Functions.php
  *
- * @package  Theme_Customisations
- * @author   WooThemes
+ * @package  Kelkoogroup_SalesTracking
+ * @author   Kelkoo Group
  * @since    1.0.0
  */
 
@@ -14,7 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 /**
  * functions.php
- * Add PHP snippets here
+ * Add lead tag
  */
 function call_leadtag_js() {
     echo '<script async="true" type="text/javascript" src="https://s.kk-resources.com/leadtag.js" ></script>';
