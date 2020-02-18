@@ -4,7 +4,7 @@
  * Description:       Plugin to contain kelkoogroup sales tracking customisation for woocommerce
  * Plugin URI:        https://github.com/KelkooGroup
  * Version:           1.0.0
- * Author:            Kelkoo
+ * Author:            Kelkoo Group
  * Author URI:        https://www.kelkoogroup.com/
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
