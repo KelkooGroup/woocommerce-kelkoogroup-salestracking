@@ -1,7 +1,8 @@
 <?php
 
 defined( 'ABSPATH' ) || exit;
-require_once(ABSPATH.'wp-content/plugins/woocommerce/templates/checkout/thankyou.php' );
+
+require_once(str_replace('woocommerce-kelkoogroup-salestracking/inc/templates/woocommerce','woocommerce/templates',__FILE__));
 
 if ( $order ) :
     $options = get_option( 'kelkoogroup_salestracking_settings' );

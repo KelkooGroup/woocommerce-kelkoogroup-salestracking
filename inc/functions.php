@@ -16,8 +16,8 @@ if ( ! defined( 'ABSPATH' ) ) {
  * functions.php
  * Add lead tag
  */
-function call_leadtag_js() {
+function kelkoogroup_salestracking_call_leadtag_js() {
     echo '<script async="true" type="text/javascript" src="https://s.kk-resources.com/leadtag.js" ></script>';
 }
 
-add_action( 'wp_head', 'call_leadtag_js' );
+add_action( 'wp_head', 'kelkoogroup_salestracking_call_leadtag_js' );
