@@ -33,7 +33,7 @@ This plugin implements the Kelkoogroup sales tracking solution for woocommerce
 
 == Changelog ==
 
-= 1.0 =
+= 1.0.0 =
 * Initial revision.
 
 
