@@ -1,5 +1,5 @@
 === Kelkoogroup Salestracking ===
-Contributors: jo-desa
+Contributors: kelkoogroup 
 Tags: kelkoogroup, sales, tracking, customise, customisation, customize, customization, php
 Requires at least: 3.0.0
 Tested up to: 5.3.2
