@@ -22,3 +22,18 @@ This plugin implements the Kelkoogroup sales tracking solution for woocommerce
 * Configure the kelkoogroup setting via Settings > Kelkoogroup
 * Activate the plugin.
 
+== Screenshots ==
+
+1. Install step by step : First go to "Plugin" wordpress menu
+2. Click the "Add new" button
+3. Search for "Kelkoo group sales tracking"
+4. From the result click on the "Install Now" button
+5. Once installed, go to the plugin menu and activate the plugin
+6. Go to the "Settings > Kelkoogroup" and set country and your company associated to your Kelkoogroup merchant account 
+
+== Changelog ==
+
+= 1.0 =
+* Initial revision.
+
+
