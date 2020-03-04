@@ -1,7 +1,6 @@
 ---
 name: "\U0001F41E Bug report"
-about: Report a bug if something isn't working as expected in the core WooCommerce
-  plugin.
+about: Report a bug if something isn't working as expected in the core Kelkoogroup sales tracking plugin.
 title: ''
 labels: ''
 assignees: ''
