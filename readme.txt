@@ -2,21 +2,54 @@
 Contributors: jo-desa
 Tags: kelkoogroup, sales, tracking, customise, customisation, customize, customization, php
 Requires at least: 3.0.0
-Tested up to: 4.5.2
+Tested up to: 5.3.2
 Stable tag: 1.0.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
+
 == Description ==
 
-This plugin implements the Kelkoogroup sales tracking solution for woocommerce
+The Kelkoo Group sales tracking plugin is the official Kelkoo Group Plugin for WordPress. It is completely free.
+The plugin implements the Kelkoogroup sales tracking solution for woocommerce
 
 
 == Installation ==
 
-1. Upload `kelkoogroup-salestracking` to the `/wp-content/plugins/` directory
-2. Activate the plugin through the 'Plugins' menu in WordPress
-3. Done!
+= Pre-requisites =
+
+- Requires PHP Version: 5.3 or higher
+- Requires WordPress Version: 4.0 or higher
+- Integrate your offers on Kelkoogroup network: to create your Kelkoo Group Merchant account, please jave a look at [Merchant Extranet](https://www.kelkoogroup.com/merchants/).
+
+
+= Install and settings =
+
+*Installation from Wordpress dashboard*
+
+To install the Kelkoo Group sales tracking plugin:
+
+1. Log in to your WordPress dashboard, navigate to the Plugins menu and click `Add New`.
+2. In the search field type “Kelkoo Group sales tracking” and click Search Plugins. You can install it by simply clicking Install Now.
+3. Once installed navigate to the Plugins menu again and activate the plugin
+4. On plugin page go to “Settings” and click on the “Kelkoogroup” link
+5. Complete the form with information related to your kelkoo group subscription
+6. Done!
+
+
+*Installation via FTP Client Software*
+
+1. Extract the .ZIP archive to a local folder on your PC. It should contain a subfolder named kelkoogroup-sales-tracking.zip
+2. Upload unzipped `kelkoogroup-sales-tracking` folder from Plugins folder to the `/wp-content/plugins/` directory using your favorite FTP client software Make sure you have setup Transfer Mode – Binary, because files can be broken upon transfer with ASCII mode
+3. Login to your WordPress admin dashboard, go to Plugins, Click `Activate`
+4. On plugin page go to “Settings” and click on the “Kelkoogroup” link
+5. Complete the form with information related to your kelkoo group subscription
+6. Done!
+
+*Kelkoo Group settings*
+
+Once your subscription has been done, you will be able to access your Merchant Extranet Dashboard and retrieve the country code and comId information.
+
 
 == Usage ==
 * Configure the kelkoogroup setting via Settings > Kelkoogroup
