@@ -20,7 +20,7 @@ The plugin implements the Kelkoogroup sales tracking solution for woocommerce
 
 - Requires PHP Version: 5.3 or higher
 - Requires WordPress Version: 4.0 or higher
-- Integrate your offers on Kelkoogroup network: to create your Kelkoo Group Merchant account, please jave a look at [Merchant Extranet](https://www.kelkoogroup.com/merchants/).
+- Integrate your offers on Kelkoogroup network: to create your Kelkoo Group Merchant account, please have a look at [Kelkoogroup for merchants](https://www.kelkoogroup.com/merchants/).
 
 
 = Install and settings =
