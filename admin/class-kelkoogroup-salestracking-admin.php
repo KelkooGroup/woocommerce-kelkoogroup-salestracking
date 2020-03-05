@@ -42,7 +42,7 @@ function kelkoogroup_salestracking_settings_init(  ) {
 
     add_settings_field(
         'kelkoogroup_salestracking_comid',
-        __( 'ComId', 'wordpress' ),
+        __( 'Merchant Identifier', 'wordpress' ),
         'kelkoogroup_salestracking_comid_render',
         'kkSalesTrackingPlugin',
         'kelkoogroup_salestracking_kkSalesTrackingPlugin_section'
@@ -66,8 +66,8 @@ function kelkoogroup_salestracking_comid_render(  ) {
 
 function kelkoogroup_salestracking_settings_section_callback(  ) {
     echo __( "<p>Kelkoogroup Sales Tracking requires a few details of the order.</p>
- <p>          ComId: This is the unique ID representing your shop within the Kelkoo system. </p>
- <p>          Country  is the 2-letter country code for the country on which your products are listed on Kelkoo:
+ <p>          Merchant Identifier: This is the unique ID representing your shop within the Kelkoo system. </p>
+ <p>          Country is the 2-letter country code for the country on which your products are listed on Kelkoo:
  'at' for Austria, 'be' for Belgium, 'br' for Brazil, 'ch' for Switzerland, 'cz' for Czech Republic, 'de' for Germany,
  'dk' for Denmark, 'es' for Spain, 'fi' for Finland, 'fr' for France, 'ie ' for Ireland, 'it' for Italy, 'mx' for Mexico,
   'nb' for Flemish Belgium 'nl' for Netherlands, 'no' for Norway, 'pl' for Poland, 'pt' for Portugal, 'ru' for Russia,
