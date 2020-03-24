@@ -23,7 +23,7 @@ if ( $order ) :
       merchantInfo: [{ country:"<?php echo $options['kelkoogroup_salestracking_country'];?>", merchantId:"<?php echo $options['kelkoogroup_salestracking_comid'];?>" }],
       orderValue: '<?php echo $order->get_total();?>',
       orderId: '<?php echo $order->get_order_number();?>',
-      basket: [<?php echo json_encode($productsKelkoo);?>]
+      basket: <?php echo json_encode($productsKelkoo);?>
     };
     (function() {
       var s = document.createElement('script');

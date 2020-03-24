@@ -3,13 +3,13 @@
  * Plugin Name:       Kelkoogroup Sales Tracking
  * Description:       Plugin to contain Kelkoogroup sales tracking customisation for Woocommerce
  * Plugin URI:        https://github.com/KelkooGroup/woocommerce-kelkoogroup-salestracking
- * Version:           1.0.0
+ * Version:           1.0.1
  * Author:            Kelkoo Group
  * Author URI:        https://www.kelkoogroup.com/
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
  * Requires at least: 3.0.0
- * Tested up to:      4.4.2
+ * Tested up to:      5.3.2
  *
  * @package Kelkoogroup_SalesTracking
  */
@@ -22,7 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Main Kelkoogroup_SalesTracking Class
  *
  * @class Kelkoogroup_SalesTracking
- * @version	1.0.0
+ * @version	1.0.1
  * @since 1.0.0
  * @package	Kelkoogroup_SalesTracking
  */
