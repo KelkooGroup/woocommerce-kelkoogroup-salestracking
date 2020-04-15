@@ -2,7 +2,11 @@
 
 defined( 'ABSPATH' ) || exit;
 
-require_once(str_replace('woocommerce-kelkoogroup-salestracking/inc/templates/woocommerce','woocommerce/templates',__FILE__));
+$woocommerce_thankyou_path = plugin_dir_path(str_replace('woocommerce-kelkoogroup-salestracking/inc/templates/woocommerce','woocommerce/templates',__FILE__));
+if (is_file($woocommerce_thankyou_path))
+{
+    require_once($woocommerce_thankyou_path);
+}
 
 if ( $order ) :
     $options = get_option( 'kelkoogroup_salestracking_settings' );
