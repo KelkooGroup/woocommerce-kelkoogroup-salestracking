@@ -3,13 +3,13 @@
  * Plugin Name:       Kelkoogroup Sales Tracking
  * Description:       Plugin to contain Kelkoogroup sales tracking customisation for Woocommerce
  * Plugin URI:        https://github.com/KelkooGroup/woocommerce-kelkoogroup-salestracking
- * Version:           1.0.2
+ * Version:           1.0.3
  * Author:            Kelkoo Group
  * Author URI:        https://www.kelkoogroup.com/
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
  * Requires at least: 3.0.0
- * Tested up to:      5.3.2
+ * Tested up to:      5.4.1
  *
  * @package Kelkoogroup_SalesTracking
  */
@@ -22,7 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Main Kelkoogroup_SalesTracking Class
  *
  * @class Kelkoogroup_SalesTracking
- * @version	1.0.2
+ * @version	1.0.3
  * @since 1.0.0
  * @package	Kelkoogroup_SalesTracking
  */
@@ -37,29 +37,54 @@ final class Kelkoogroup_SalesTracking {
 		require_once( 'admin/class-kelkoogroup-salestracking-admin.php');
 	}
 
-	/**
-	 * Setup all the things
-	 */
-	public function kelkoogroup_salestracking_setup() {
-		add_filter( 'wc_get_template',    array( $this, 'kelkoogroup_salestracking_wc_get_template' ), 11, 5 );
-		add_action( 'admin_menu', 'kelkoogroup_salestracking_add_admin_menu' );
-        	add_action( 'admin_init', 'kelkoogroup_salestracking_settings_init' );
-        	add_action( 'plugin_action_links_' . plugin_basename( __FILE__ ), 'kelkoogroup_action_links' );
-	}
+     /**
+      * Setup all the things
+      */
+    public function kelkoogroup_salestracking_setup() {
+            add_action( 'admin_menu', 'kelkoogroup_salestracking_add_admin_menu' );
+            add_action( 'admin_init', 'kelkoogroup_salestracking_settings_init' );
+            add_action( 'plugin_action_links_' . plugin_basename( __FILE__ ), 'kelkoogroup_action_links' );
+            add_action('woocommerce_thankyou', array(&$this, 'kelkoogroup_salestracking_woocommerce_thankyou'), -10);
+    }
 
-	/**
-	 * Override WooCommerce template
-	 *
-	 */
-	public function kelkoogroup_salestracking_wc_get_template( $located, $template_name, $args, $template_path, $default_path ) {
-		$plugin_template_path = untrailingslashit( plugin_dir_path( __FILE__ ) ) . '/inc/templates/woocommerce/' . $template_name;
 
-		if ( file_exists( $plugin_template_path ) ) {
-			$located = $plugin_template_path;
-		}
+    public function kelkoogroup_salestracking_woocommerce_thankyou($orderId) {
+    if( class_exists( 'WC_Order' ) ) {
+        $order=new WC_Order($orderId);
+        if ( $order ) :
+            $options = get_option( 'kelkoogroup_salestracking_settings' );
+            $productsKelkoo=array();
+            $items = $order->get_items( apply_filters( 'woocommerce_purchase_order_item_types', 'line_item' ));
+            foreach ( $items as $item ) {
+                $product = json_decode($item->get_product());
+                $productKelkoo=array('productname'=>$product->name,
+               'productid'=>$product->id,
+               'quantity'=>$item->get_quantity(),
+               'price'=>$product->price);
+                array_push($productsKelkoo,$productKelkoo);
+            }
+         ?>
+         <script type="text/javascript">
+             _kkstrack = {
+               merchantInfo: [{ country:"<?php echo $options['kelkoogroup_salestracking_country'];?>", merchantId:"<?php echo $options['kelkoogroup_salestracking_comid'];?>" }],
+               orderValue: '<?php echo $order->get_total();?>',
+               orderId: '<?php echo $order->get_order_number();?>',
+               basket: <?php echo json_encode($productsKelkoo);?>
+            };
+             (function() {
+               var s = document.createElement('script');
+               s.type = 'text/javascript';
+               s.async = true;
+               s.src = 'https://s.kk-resources.com/ks.js';
+               var x = document.getElementsByTagName('script')[0];
+               x.parentNode.insertBefore(s, x);
+             })();
+          </script>
+         <?php endif;
+         }
+    }
 
-		return $located;
-	}
+
 } // End Class
 
 /**
