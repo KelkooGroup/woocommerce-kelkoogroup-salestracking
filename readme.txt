@@ -65,6 +65,12 @@ Once your subscription has been done, you will be able to access your Merchant E
 6. Go to the "Settings > Kelkoogroup" and set country and your company associated to your Kelkoogroup merchant account 
 
 == Changelog ==
+= 1.0.3 =
+* Change the ways to manage plugins conflicts
+
+= 1.0.2 =
+* Add robustness on thankyou template (use plugin variable)
+
 = 1.0.1 = 
 * Fix Basket parameter on confirmation page
 

@@ -9,7 +9,7 @@
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
  * Requires at least: 3.0.0
- * Tested up to:      5.3.2
+ * Tested up to:      5.4.1
  *
  * @package Kelkoogroup_SalesTracking
  */
@@ -37,18 +37,19 @@ final class Kelkoogroup_SalesTracking {
 		require_once( 'admin/class-kelkoogroup-salestracking-admin.php');
 	}
 
-        /**
-         * Setup all the things
-         */
-        public function kelkoogroup_salestracking_setup() {
-                add_action( 'admin_menu', 'kelkoogroup_salestracking_add_admin_menu' );
-                add_action( 'admin_init', 'kelkoogroup_salestracking_settings_init' );
-                add_action( 'plugin_action_links_' . plugin_basename( __FILE__ ), 'kelkoogroup_action_links' );
-                add_action('woocommerce_thankyou', array(&$this, 'kelkoogroup_salestracking_woocommerce_thankyou'), -10);
-        }
+     /**
+      * Setup all the things
+      */
+    public function kelkoogroup_salestracking_setup() {
+            add_action( 'admin_menu', 'kelkoogroup_salestracking_add_admin_menu' );
+            add_action( 'admin_init', 'kelkoogroup_salestracking_settings_init' );
+            add_action( 'plugin_action_links_' . plugin_basename( __FILE__ ), 'kelkoogroup_action_links' );
+            add_action('woocommerce_thankyou', array(&$this, 'kelkoogroup_salestracking_woocommerce_thankyou'), -10);
+    }
 
 
-        public function kelkoogroup_salestracking_woocommerce_thankyou($orderId) {
+    public function kelkoogroup_salestracking_woocommerce_thankyou($orderId) {
+    if( class_exists( 'WC_Order' ) ) {
         $order=new WC_Order($orderId);
         if ( $order ) :
             $options = get_option( 'kelkoogroup_salestracking_settings' );
@@ -80,7 +81,8 @@ final class Kelkoogroup_SalesTracking {
              })();
           </script>
          <?php endif;
-}
+         }
+    }
 
 
 } // End Class
