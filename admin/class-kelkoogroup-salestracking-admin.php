@@ -89,7 +89,7 @@ function kelkoogroup_salestracking_settings_section_callback(  ) {
   'se' for Sweden, 'uk' for United Kingdom, 'us' for United States... </p>
 <p>You can get more information on <a href='https://www.kelkoogroup.com/kelkoo-customer-service/support-for-merchants/sales-tracking-guides/implement-kelkoo-
 sales-tracking/'>https://www.kelkoogroup.com/kelkoo-customer-service/support-for-merchants/sales-tracking-guides/implement-kelkoo-sales-tracking/</a> </p>
-  <p>          MulticomId : If you need to configure multiple merchant information (you have multiple Merchant Identifier/Country), you can set configuration as <i>{country: 'nl', merchantId: '123'}, {country: 'nb', merchantId: '345'}</i></p>",
+  <p>          Multi merchant identifier : If you need to configure multiple merchant information (you have multiple Merchant Identifier/Country), you can set configuration as <i>{country: <strong>\"</strong>nl<strong>\"</strong>, merchantId: <strong>\"</strong>123<strong>\"</strong>}, {country: <strong>\"</strong>nb<strong>\"</strong>, merchantId: <strong>\"</strong>345<strong>\"</strong>}</i></p>",
 'wordpress' );
 }
 
