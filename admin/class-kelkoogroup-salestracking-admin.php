@@ -26,9 +26,16 @@ function kelkoogroup_salestracking_settings_init(  ) {
     register_setting( 'kkSalesTrackingPlugin', 'kelkoogroup_salestracking_settings' );
 
     add_settings_section(
-        'kelkoogroup_salestracking_kkSalesTrackingPlugin_section',
+        'kelkoogroup_salestracking_kkSalesTrackingPlugin_intro_section',
         __( 'Kelkoogroup Sales tracking', 'wordpress' ),
-        'kelkoogroup_salestracking_settings_section_callback',
+        'kelkoogroup_salestracking_settings_intro_section_callback',
+        'kkSalesTrackingPlugin'
+    );
+
+    add_settings_section(
+        'kelkoogroup_salestracking_kkSalesTrackingPlugin_onecampaign_section',
+        __( 'Kelkoogroup Sales tracking - only one campaign', 'wordpress' ),
+        'kelkoogroup_salestracking_settings_onecampaign_section_callback',
         'kkSalesTrackingPlugin'
     );
 
@@ -37,7 +44,7 @@ function kelkoogroup_salestracking_settings_init(  ) {
         __( 'Country', 'wordpress' ),
         'kelkoogroup_salestracking_country_render',
         'kkSalesTrackingPlugin',
-        'kelkoogroup_salestracking_kkSalesTrackingPlugin_section'
+        'kelkoogroup_salestracking_kkSalesTrackingPlugin_onecampaign_section'
     );
 
     add_settings_field(
@@ -45,7 +52,14 @@ function kelkoogroup_salestracking_settings_init(  ) {
         __( 'Merchant Identifier', 'wordpress' ),
         'kelkoogroup_salestracking_comid_render',
         'kkSalesTrackingPlugin',
-        'kelkoogroup_salestracking_kkSalesTrackingPlugin_section'
+        'kelkoogroup_salestracking_kkSalesTrackingPlugin_onecampaign_section'
+    );
+
+    add_settings_section(
+        'kelkoogroup_salestracking_kkSalesTrackingPlugin_multicomid_section',
+        __( 'Kelkoogroup Sales tracking - multiple campaign', 'wordpress' ),
+        'kelkoogroup_salestracking_settings_multicomid_section_callback',
+        'kkSalesTrackingPlugin'
     );
 
      add_settings_field(
@@ -53,8 +67,9 @@ function kelkoogroup_salestracking_settings_init(  ) {
         __( 'Multi Merchant Information', 'wordpress' ),
         'kelkoogroup_salestracking_multicomid_render',
         'kkSalesTrackingPlugin',
-        'kelkoogroup_salestracking_kkSalesTrackingPlugin_section'
+        'kelkoogroup_salestracking_kkSalesTrackingPlugin_multicomid_section'
     );
+
 }
 
 function kelkoogroup_salestracking_country_render(  ) {
@@ -75,24 +90,32 @@ function kelkoogroup_salestracking_multicomid_render(  ) {
     $options = get_option( 'kelkoogroup_salestracking_settings' );
     ?>
     <input type='text' name='kelkoogroup_salestracking_settings[kelkoogroup_salestracking_multicomid]' value='<?php echo $options['kelkoogroup_salestracking_multicomid']; ?>'>
+<i>{country: <strong>"</strong>nl<strong>"</strong>, merchantId: <strong>"</strong>123<strong>"</strong>}, {country: <strong>"</strong>nb<strong>"</strong>, merchantId: <strong>"</strong>345<strong>"</strong>}</i>
     <?php
 }
 
 
-function kelkoogroup_salestracking_settings_section_callback(  ) {
-    echo __( "<p>Kelkoogroup Sales Tracking requires a few details of the order.</p>
- <p>          Merchant Identifier: This is the unique ID representing your shop within the Kelkoo system. </p>
+function kelkoogroup_salestracking_settings_intro_section_callback(  ) {
+    echo __( "<p>Kelkoogroup Sales Tracking requires a few details of the order.</p>",'wordpress' );
+}
+
+function kelkoogroup_salestracking_settings_onecampaign_section_callback(  ) {
+    echo __( "<p>          Merchant Identifier: This is the unique ID representing your shop within the Kelkoo system. </p>
  <p>          Country is the 2-letter country code for the country on which your products are listed on Kelkoo:
  'at' for Austria, 'be' for Belgium, 'br' for Brazil, 'ch' for Switzerland, 'cz' for Czech Republic, 'de' for Germany,
  'dk' for Denmark, 'es' for Spain, 'fi' for Finland, 'fr' for France, 'ie ' for Ireland, 'it' for Italy, 'mx' for Mexico,
   'nb' for Flemish Belgium 'nl' for Netherlands, 'no' for Norway, 'pl' for Poland, 'pt' for Portugal, 'ru' for Russia,
   'se' for Sweden, 'uk' for United Kingdom, 'us' for United States... </p>
   <p>You can get more information on <a href='https://www.kelkoogroup.com/kelkoo-customer-service/support-for-merchants/sales-tracking-guides/implement-kelkoo-
-sales-tracking/'>https://www.kelkoogroup.com/kelkoo-customer-service/support-for-merchants/sales-tracking-guides/implement-kelkoo-sales-tracking/</a> </p>
-  <hr> <p>Optional: </p>
-    <p>      Multi merchant information : If you need to configure multiple merchant information (you have multiple Merchant Identifier/Country), you can set configuration as <i>{country: <strong>\"</strong>nl<strong>\"</strong>, merchantId: <strong>\"</strong>123<strong>\"</strong>}, {country: <strong>\"</strong>nb<strong>\"</strong>, merchantId: <strong>\"</strong>345<strong>\"</strong>}</i></p>",
+sales-tracking/'>https://www.kelkoogroup.com/kelkoo-customer-service/support-for-merchants/sales-tracking-guides/implement-kelkoo-sales-tracking/</a> </p>",
 'wordpress' );
 }
+
+function kelkoogroup_salestracking_settings_multicomid_section_callback(  ) {
+    echo __( "<p>      Multi merchant information : If you need to configure multiple merchant information (you have multiple Merchant Identifier/Country), you can copy/paste the sample and update it.",
+'wordpress' );
+}
+
 
 function kelkoogroup_salestracking_options_page(  ) {
     ?>
