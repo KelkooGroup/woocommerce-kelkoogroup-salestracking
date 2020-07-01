@@ -86,10 +86,10 @@ function kelkoogroup_salestracking_settings_section_callback(  ) {
  'at' for Austria, 'be' for Belgium, 'br' for Brazil, 'ch' for Switzerland, 'cz' for Czech Republic, 'de' for Germany,
  'dk' for Denmark, 'es' for Spain, 'fi' for Finland, 'fr' for France, 'ie ' for Ireland, 'it' for Italy, 'mx' for Mexico,
   'nb' for Flemish Belgium 'nl' for Netherlands, 'no' for Norway, 'pl' for Poland, 'pt' for Portugal, 'ru' for Russia,
-  'se' for Sweden, 'uk' for United Kingdom, 'us' for United States... </p>
+  'se' for Sweden, 'uk' for United Kingdom, 'us' for United States... </p><hr> <p>Optional: </p>
+    <p>      Multi merchant identifier : If you need to configure multiple merchant information (you have multiple Merchant Identifier/Country), you can set configuration as <i>{country: <strong>\"</strong>nl<strong>\"</strong>, merchantId: <strong>\"</strong>123<strong>\"</strong>}, {country: <strong>\"</strong>nb<strong>\"</strong>, merchantId: <strong>\"</strong>345<strong>\"</strong>}</i></p>"
 <p>You can get more information on <a href='https://www.kelkoogroup.com/kelkoo-customer-service/support-for-merchants/sales-tracking-guides/implement-kelkoo-
-sales-tracking/'>https://www.kelkoogroup.com/kelkoo-customer-service/support-for-merchants/sales-tracking-guides/implement-kelkoo-sales-tracking/</a> </p>
-  <p>          Multi merchant identifier : If you need to configure multiple merchant information (you have multiple Merchant Identifier/Country), you can set configuration as <i>{country: <strong>\"</strong>nl<strong>\"</strong>, merchantId: <strong>\"</strong>123<strong>\"</strong>}, {country: <strong>\"</strong>nb<strong>\"</strong>, merchantId: <strong>\"</strong>345<strong>\"</strong>}</i></p>",
+sales-tracking/'>https://www.kelkoogroup.com/kelkoo-customer-service/support-for-merchants/sales-tracking-guides/implement-kelkoo-sales-tracking/</a> </p>",
 'wordpress' );
 }
 
