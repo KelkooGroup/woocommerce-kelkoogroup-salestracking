@@ -66,8 +66,12 @@ final class Kelkoogroup_SalesTracking {
          ?>
          <script type="text/javascript">
              _kkstrack = {
-               merchantInfo: [{ country:"<?php echo $options['kelkoogroup_salestracking_country'];?>", merchantId:"<?php echo $options['kelkoogroup_salestracking_comid'];?>" }],
-               orderValue: '<?php echo $order->get_total();?>',
+	      <?php if ($options['kelkoogroup_salestracking_multicomid'] == FALSE) { ?>
+	       merchantInfo: [{ country:"<?php echo $options['kelkoogroup_salestracking_country'];?>", merchantId:"<?php echo $options['kelkoogroup_salestracking_comid'];?>" }],
+              <?php } else { ?>
+               merchantInfo: [<?php echo $options['kelkoogroup_salestracking_multicomid'];?>],
+              <?php } ?>
+	       orderValue: '<?php echo $order->get_total();?>',
                orderId: '<?php echo $order->get_order_number();?>',
                basket: <?php echo json_encode($productsKelkoo);?>
             };

@@ -48,6 +48,13 @@ function kelkoogroup_salestracking_settings_init(  ) {
         'kelkoogroup_salestracking_kkSalesTrackingPlugin_section'
     );
 
+     add_settings_field(
+        'kelkoogroup_salestracking_multicomid',
+        __( 'MulticomId', 'wordpress' ),
+        'kelkoogroup_salestracking_multicomid_render',
+        'kkSalesTrackingPlugin',
+        'kelkoogroup_salestracking_kkSalesTrackingPlugin_section'
+    );
 }
 
 function kelkoogroup_salestracking_country_render(  ) {
@@ -64,6 +71,14 @@ function kelkoogroup_salestracking_comid_render(  ) {
     <?php
 }
 
+function kelkoogroup_salestracking_multicomid_render(  ) {
+    $options = get_option( 'kelkoogroup_salestracking_settings' );
+    ?>
+    <input type='text' name='kelkoogroup_salestracking_settings[kelkoogroup_salestracking_multicomid]' value='<?php echo $options['kelkoogroup_salestracking_multicomid']; ?>'>
+    <?php
+}
+
+
 function kelkoogroup_salestracking_settings_section_callback(  ) {
     echo __( "<p>Kelkoogroup Sales Tracking requires a few details of the order.</p>
  <p>          Merchant Identifier: This is the unique ID representing your shop within the Kelkoo system. </p>
@@ -73,7 +88,8 @@ function kelkoogroup_salestracking_settings_section_callback(  ) {
   'nb' for Flemish Belgium 'nl' for Netherlands, 'no' for Norway, 'pl' for Poland, 'pt' for Portugal, 'ru' for Russia,
   'se' for Sweden, 'uk' for United Kingdom, 'us' for United States... </p>
 <p>You can get more information on <a href='https://www.kelkoogroup.com/kelkoo-customer-service/support-for-merchants/sales-tracking-guides/implement-kelkoo-
-sales-tracking/'>https://www.kelkoogroup.com/kelkoo-customer-service/support-for-merchants/sales-tracking-guides/implement-kelkoo-sales-tracking/</a> </p>",
+sales-tracking/'>https://www.kelkoogroup.com/kelkoo-customer-service/support-for-merchants/sales-tracking-guides/implement-kelkoo-sales-tracking/</a> </p>
+  <p>          MulticomId : If you need to configure multiple merchant information (you have multiple Merchant Identifier/Country), you can set configuration as <i>{country: 'nl', merchantId: '123'}, {country: 'nb', merchantId: '345'}</i></p>",
 'wordpress' );
 }
 
