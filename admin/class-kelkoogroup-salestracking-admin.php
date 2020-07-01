@@ -96,7 +96,7 @@ function kelkoogroup_salestracking_multicomid_render(  ) {
 
 
 function kelkoogroup_salestracking_settings_intro_section_callback(  ) {
-    echo __( "<p>Kelkoogroup Sales Tracking requires a few details of the order.</p>",'wordpress' );
+    echo __( "<p>Kelkoogroup Sales Tracking requires a few configuration.</p>",'wordpress' );
 }
 
 function kelkoogroup_salestracking_settings_onecampaign_section_callback(  ) {

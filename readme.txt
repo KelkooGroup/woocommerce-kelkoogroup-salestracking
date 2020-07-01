@@ -1,9 +1,9 @@
 === Kelkoogroup Salestracking ===
 Contributors: kelkoogroup 
-Tags: kelkoogroup, sales, tracking, customise, customisation, customize, customization, php
+Tags: kelkoogroup, sales, tracking, php, woocommerce
 Requires at least: 3.0.0
 Tested up to: 5.4.1
-Stable tag: 1.0.2
+Stable tag: 1.0.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -65,6 +65,10 @@ Once your subscription has been done, you will be able to access your Merchant E
 6. Go to the "Settings > Kelkoogroup" and set country and your company associated to your Kelkoogroup merchant account 
 
 == Changelog ==
+
+= 1.0.4 =
+* Manage multiple campaigns 
+
 = 1.0.3 =
 * Change the ways to manage plugins conflicts
 
