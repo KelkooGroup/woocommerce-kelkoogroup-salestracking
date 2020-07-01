@@ -50,7 +50,7 @@ function kelkoogroup_salestracking_settings_init(  ) {
 
      add_settings_field(
         'kelkoogroup_salestracking_multicomid',
-        __( 'MulticomId', 'wordpress' ),
+        __( 'Multi Merchant Information', 'wordpress' ),
         'kelkoogroup_salestracking_multicomid_render',
         'kkSalesTrackingPlugin',
         'kelkoogroup_salestracking_kkSalesTrackingPlugin_section'
@@ -90,7 +90,7 @@ function kelkoogroup_salestracking_settings_section_callback(  ) {
   <p>You can get more information on <a href='https://www.kelkoogroup.com/kelkoo-customer-service/support-for-merchants/sales-tracking-guides/implement-kelkoo-
 sales-tracking/'>https://www.kelkoogroup.com/kelkoo-customer-service/support-for-merchants/sales-tracking-guides/implement-kelkoo-sales-tracking/</a> </p>
   <hr> <p>Optional: </p>
-    <p>      Multi merchant identifier : If you need to configure multiple merchant information (you have multiple Merchant Identifier/Country), you can set configuration as <i>{country: <strong>\"</strong>nl<strong>\"</strong>, merchantId: <strong>\"</strong>123<strong>\"</strong>}, {country: <strong>\"</strong>nb<strong>\"</strong>, merchantId: <strong>\"</strong>345<strong>\"</strong>}</i></p>",
+    <p>      Multi merchant information : If you need to configure multiple merchant information (you have multiple Merchant Identifier/Country), you can set configuration as <i>{country: <strong>\"</strong>nl<strong>\"</strong>, merchantId: <strong>\"</strong>123<strong>\"</strong>}, {country: <strong>\"</strong>nb<strong>\"</strong>, merchantId: <strong>\"</strong>345<strong>\"</strong>}</i></p>",
 'wordpress' );
 }
 
