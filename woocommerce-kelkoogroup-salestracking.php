@@ -3,7 +3,7 @@
  * Plugin Name:       Kelkoogroup Sales Tracking
  * Description:       Plugin to contain Kelkoogroup sales tracking customisation for Woocommerce
  * Plugin URI:        https://github.com/KelkooGroup/woocommerce-kelkoogroup-salestracking
- * Version:           1.0.3
+ * Version:           1.0.4
  * Author:            Kelkoo Group
  * Author URI:        https://www.kelkoogroup.com/
  * License:           GPL-2.0+
@@ -22,7 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Main Kelkoogroup_SalesTracking Class
  *
  * @class Kelkoogroup_SalesTracking
- * @version	1.0.3
+ * @version	1.0.4
  * @since 1.0.0
  * @package	Kelkoogroup_SalesTracking
  */
@@ -66,8 +66,12 @@ final class Kelkoogroup_SalesTracking {
          ?>
          <script type="text/javascript">
              _kkstrack = {
-               merchantInfo: [{ country:"<?php echo $options['kelkoogroup_salestracking_country'];?>", merchantId:"<?php echo $options['kelkoogroup_salestracking_comid'];?>" }],
-               orderValue: '<?php echo $order->get_total();?>',
+	      <?php if ($options['kelkoogroup_salestracking_multicomid'] == FALSE) { ?>
+	       merchantInfo: [{ country:"<?php echo $options['kelkoogroup_salestracking_country'];?>", merchantId:"<?php echo $options['kelkoogroup_salestracking_comid'];?>" }],
+              <?php } else { ?>
+               merchantInfo: [<?php echo $options['kelkoogroup_salestracking_multicomid'];?>],
+              <?php } ?>
+	       orderValue: '<?php echo $order->get_total();?>',
                orderId: '<?php echo $order->get_order_number();?>',
                basket: <?php echo json_encode($productsKelkoo);?>
             };
