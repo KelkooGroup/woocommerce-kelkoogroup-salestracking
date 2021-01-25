@@ -22,7 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Main Kelkoogroup_SalesTracking Class
  *
  * @class Kelkoogroup_SalesTracking
- * @version	1.0.4
+ * @version	1.0.5
  * @since 1.0.0
  * @package	Kelkoogroup_SalesTracking
  */

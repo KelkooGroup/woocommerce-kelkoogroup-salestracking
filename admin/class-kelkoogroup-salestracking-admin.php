@@ -105,7 +105,7 @@ function kelkoogroup_salestracking_settings_onecampaign_section_callback(  ) {
  'dk' for Denmark, 'es' for Spain, 'fi' for Finland, 'fr' for France, 'ie ' for Ireland, 'it' for Italy, 'mx' for Mexico,
   'nb' for Flemish Belgium 'nl' for Netherlands, 'no' for Norway, 'pl' for Poland, 'pt' for Portugal, 'ru' for Russia,
   'se' for Sweden, 'uk' for United Kingdom, 'us' for United States... </p>
-  <p>You can get the full list on <a href='https://github.com/KelkooGroup/woocommerce-kelkoogroup-salestracking#country'>https://github.com/KelkooGroup/woocommerce-kelkoogroup-salestracking#country</a> </p>",
+  <p>You can get the full list on <a href='https://github.com/KelkooGroup/woocommerce-kelkoogroup-salestracking#country' target='_blank'>https://github.com/KelkooGroup/woocommerce-kelkoogroup-salestracking#country</a> </p>",
 'wordpress' );
 }
 
