@@ -66,6 +66,9 @@ Once your subscription has been done, you will be able to access your Merchant E
 
 == Changelog ==
 
+= 1.0.5 =
+* Update country parameter documentation
+
 = 1.0.4 =
 * Manage multiple campaigns 
 

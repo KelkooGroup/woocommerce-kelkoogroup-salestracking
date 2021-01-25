@@ -29,6 +29,56 @@ To install the Kelkoo Group sales tracking plugin, you can have a look at [Kelko
 ## Settings
 - Configure the kelkoogroup setting via Settings > Kelkoogroup
 
+### Merchant Identifier
+This is the unique ID representing your shop within the Kelkoo system.
+
+### Country
+Country is the 2-letter country code for the country on which your products are listed on Kelkoo:
+
+| Country              | Country code |
+| -------              | ------------ |
+| Australia            | au           |
+| Austria              | at           |
+| Belgium (Flemish)    | nb           |
+| Belgium (French)     | be           |
+| Brazil               | br           |
+| Canada               | ca           |
+| Czech Republic       | cz           |
+| Denmark              | dk           |
+| Finland              | fi           |
+| France               | fr           |
+| Germany              | de           |
+| Greece               | gr           |
+| Hong Kong            | hk           |
+| Hungary              | hu           |
+| India                | in           |
+| Indonesia            | id           |
+| Ireland              | ie           |
+| Italy                | it           |
+| Japan                | jp           |
+| Malaysia             | my           |
+| Mexico               | mx           |
+| New Zealand          | nz           |
+| Norway               | no           |
+| Philippines          | ph           |
+| Poland               | pl           |
+| Portugal             | pt           |
+| Romania              | ro           |
+| Russia               | ru           |
+| Singapore            | sg           |
+| Slovakia             | sk           |
+| South Africa         | za           |
+| South Korea          | kr           |
+| Spain                | es           |
+| Sweden               | se           |
+| Switzerland          | ch           |
+| The Netherlands      | nl           |
+| United Arab Emirates | ae           |
+| United Kingdom       | uk           |
+| USA                  | us           |
+| Turkey               | tr           |
+| Vietnam              | vn           |
+
 
 ## Reporting bugs
 
