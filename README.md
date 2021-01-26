@@ -19,7 +19,14 @@ To install the Kelkoo Group sales tracking plugin, you can have a look at [Kelko
 
 
 *Installation from source*
-1. Upload unzipped `woocommerce-kelkoogroup-sales-tracking` folder from Plugins folder to the `/wp-content/plugins/` and extract it
+1. Go to folder `/wp-content/plugins` and unzip `woocommerce-kelkoogroup-sales-tracking` file
+2. Login to your WordPress admin dashboard, go to Plugins, Click `Activate`
+3. On plugin page go to “Settings” and click on the “Kelkoogroup” link
+4. Complete the form with information related to your kelkoo group subscription
+5. Done!
+
+*Installation from git (dev purpose)*
+1. Go to folder `/wp-content/plugins` and do a `git clone git@github.com:KelkooGroup/woocommerce-kelkoogroup-salestracking.git`
 2. Login to your WordPress admin dashboard, go to Plugins, Click `Activate`
 3. On plugin page go to “Settings” and click on the “Kelkoogroup” link
 4. Complete the form with information related to your kelkoo group subscription
@@ -28,6 +35,56 @@ To install the Kelkoo Group sales tracking plugin, you can have a look at [Kelko
 
 ## Settings
 - Configure the kelkoogroup setting via Settings > Kelkoogroup
+
+### Merchant Identifier
+This is the unique ID representing your shop within the Kelkoo system.
+
+### Country
+Country is the 2-letter country code for the country on which your products are listed on Kelkoo:
+
+| Country              | Country code |
+| -------              | ------------ |
+| Australia            | au           |
+| Austria              | at           |
+| Belgium (Flemish)    | nb           |
+| Belgium (French)     | be           |
+| Brazil               | br           |
+| Canada               | ca           |
+| Czech Republic       | cz           |
+| Denmark              | dk           |
+| Finland              | fi           |
+| France               | fr           |
+| Germany              | de           |
+| Greece               | gr           |
+| Hong Kong            | hk           |
+| Hungary              | hu           |
+| India                | in           |
+| Indonesia            | id           |
+| Ireland              | ie           |
+| Italy                | it           |
+| Japan                | jp           |
+| Malaysia             | my           |
+| Mexico               | mx           |
+| New Zealand          | nz           |
+| Norway               | no           |
+| Philippines          | ph           |
+| Poland               | pl           |
+| Portugal             | pt           |
+| Romania              | ro           |
+| Russia               | ru           |
+| Singapore            | sg           |
+| Slovakia             | sk           |
+| South Africa         | za           |
+| South Korea          | kr           |
+| Spain                | es           |
+| Sweden               | se           |
+| Switzerland          | ch           |
+| The Netherlands      | nl           |
+| United Arab Emirates | ae           |
+| United Kingdom       | uk           |
+| USA                  | us           |
+| Turkey               | tr           |
+| Vietnam              | vn           |
 
 
 ## Reporting bugs

@@ -94,20 +94,18 @@ function kelkoogroup_salestracking_multicomid_render(  ) {
     <?php
 }
 
-
 function kelkoogroup_salestracking_settings_intro_section_callback(  ) {
     echo __( "<p>Kelkoogroup Sales Tracking requires a few configuration.</p>",'wordpress' );
 }
 
 function kelkoogroup_salestracking_settings_onecampaign_section_callback(  ) {
-    echo __( "<p>          Merchant Identifier: This is the unique ID representing your shop within the Kelkoo system. </p>
+    echo __( "<p>          Merchant Identifier: This is the unique ID representing your shop within the Kelkoo system. You got it by email at your subscription, else to recover it you can ask your Kelkoogroup account manager. </p>
  <p>          Country is the 2-letter country code for the country on which your products are listed on Kelkoo:
  'at' for Austria, 'be' for Belgium, 'br' for Brazil, 'ch' for Switzerland, 'cz' for Czech Republic, 'de' for Germany,
  'dk' for Denmark, 'es' for Spain, 'fi' for Finland, 'fr' for France, 'ie ' for Ireland, 'it' for Italy, 'mx' for Mexico,
   'nb' for Flemish Belgium 'nl' for Netherlands, 'no' for Norway, 'pl' for Poland, 'pt' for Portugal, 'ru' for Russia,
   'se' for Sweden, 'uk' for United Kingdom, 'us' for United States... </p>
-  <p>You can get more information on <a href='https://www.kelkoogroup.com/kelkoo-customer-service/support-for-merchants/sales-tracking-guides/implement-kelkoo-
-sales-tracking/'>https://www.kelkoogroup.com/kelkoo-customer-service/support-for-merchants/sales-tracking-guides/implement-kelkoo-sales-tracking/</a> </p>",
+  <p>You can get the full list on <a href='https://github.com/KelkooGroup/woocommerce-kelkoogroup-salestracking#country' target='_blank'>https://github.com/KelkooGroup/woocommerce-kelkoogroup-salestracking#country</a> </p>",
 'wordpress' );
 }
 
@@ -115,7 +113,6 @@ function kelkoogroup_salestracking_settings_multicomid_section_callback(  ) {
     echo __( "<p>      Multi merchant information : If you need to configure multiple merchant information (you have multiple Merchant Identifier/Country), you can copy/paste the sample and update it.",
 'wordpress' );
 }
-
 
 function kelkoogroup_salestracking_options_page(  ) {
     ?>
