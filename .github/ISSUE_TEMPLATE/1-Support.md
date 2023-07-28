@@ -10,7 +10,7 @@ assignees: ''
 We don't offer technical support on GitHub so we recommend using the following:
 
 **Reading our documentation**
-Usage docs can be found here: https://www.kelkoogroup.com/kelkoo-customer-service/support-for-merchants/sales-tracking-guides/
+Usage docs can be found here: https://developers.kelkoogroup.com/app/documentation/navigate/_merchant/salesTrackingWS/_/_/Overview
 
 
 **General usage and development questions**
