@@ -66,6 +66,9 @@ Once your subscription has been done, you will be able to access your Merchant E
 
 == Changelog ==
 
+= 1.0.7 =
+* Improve plugin security and compatibility
+
 = 1.0.6 =
 * Update version and fix some documentation
 
