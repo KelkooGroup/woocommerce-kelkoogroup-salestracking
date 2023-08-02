@@ -14,7 +14,7 @@
 
 function kelkoogroup_action_links( $links ) {
     $links = array_merge( array(
-            '<a href="' . esc_url( admin_url( '/options-general.php?page=kelkoogroup-settings' ) ) . '">' . __( 'Settings', 'textdomain' ) . '</a>'  ), $links );
+            '<a href="' . esc_url( admin_url( '/options-general.php?page=kelkoogroup-settings' ) ) . '">' . __( 'Settings', 'kelkoogroup-sales-tracking' ) . '</a>'  ), $links );
     return $links;
 }
 
@@ -27,21 +27,21 @@ function kelkoogroup_salestracking_settings_init(  ) {
 
     add_settings_section(
         'kelkoogroup_salestracking_kkSalesTrackingPlugin_intro_section',
-        __( 'Kelkoogroup Sales tracking', 'wordpress' ),
+        __( 'Kelkoogroup Sales tracking', 'kelkoogroup-sales-tracking' ),
         'kelkoogroup_salestracking_settings_intro_section_callback',
         'kkSalesTrackingPlugin'
     );
 
     add_settings_section(
         'kelkoogroup_salestracking_kkSalesTrackingPlugin_onecampaign_section',
-        __( 'Kelkoogroup Sales tracking - only one campaign', 'wordpress' ),
+        __( 'Kelkoogroup Sales tracking - only one campaign', 'kelkoogroup-sales-tracking' ),
         'kelkoogroup_salestracking_settings_onecampaign_section_callback',
         'kkSalesTrackingPlugin'
     );
 
     add_settings_field(
         'kelkoogroup_salestracking_country',
-        __( 'Country', 'wordpress' ),
+        __( 'Country', 'kelkoogroup-sales-tracking' ),
         'kelkoogroup_salestracking_country_render',
         'kkSalesTrackingPlugin',
         'kelkoogroup_salestracking_kkSalesTrackingPlugin_onecampaign_section'
@@ -49,7 +49,7 @@ function kelkoogroup_salestracking_settings_init(  ) {
 
     add_settings_field(
         'kelkoogroup_salestracking_comid',
-        __( 'Merchant Identifier', 'wordpress' ),
+        __( 'Merchant Identifier', 'kelkoogroup-sales-tracking' ),
         'kelkoogroup_salestracking_comid_render',
         'kkSalesTrackingPlugin',
         'kelkoogroup_salestracking_kkSalesTrackingPlugin_onecampaign_section'
@@ -57,14 +57,14 @@ function kelkoogroup_salestracking_settings_init(  ) {
 
     add_settings_section(
         'kelkoogroup_salestracking_kkSalesTrackingPlugin_multicomid_section',
-        __( 'Kelkoogroup Sales tracking - multiple campaign', 'wordpress' ),
+        __( 'Kelkoogroup Sales tracking - multiple campaign', 'kelkoogroup-sales-tracking' ),
         'kelkoogroup_salestracking_settings_multicomid_section_callback',
         'kkSalesTrackingPlugin'
     );
 
      add_settings_field(
         'kelkoogroup_salestracking_multicomid',
-        __( 'Multi Merchant Information', 'wordpress' ),
+        __( 'Multi Merchant Information', 'kelkoogroup-sales-tracking' ),
         'kelkoogroup_salestracking_multicomid_render',
         'kkSalesTrackingPlugin',
         'kelkoogroup_salestracking_kkSalesTrackingPlugin_multicomid_section'
@@ -95,7 +95,7 @@ function kelkoogroup_salestracking_multicomid_render(  ) {
 }
 
 function kelkoogroup_salestracking_settings_intro_section_callback(  ) {
-    echo __( "<p>Kelkoogroup Sales Tracking requires a few configuration.</p>",'wordpress' );
+    echo __( "<p>Kelkoogroup Sales Tracking requires a few configuration.</p>",'kelkoogroup-sales-tracking' );
 }
 
 function kelkoogroup_salestracking_settings_onecampaign_section_callback(  ) {
@@ -106,12 +106,12 @@ function kelkoogroup_salestracking_settings_onecampaign_section_callback(  ) {
   'nb' for Flemish Belgium 'nl' for Netherlands, 'no' for Norway, 'pl' for Poland, 'pt' for Portugal, 'ru' for Russia,
   'se' for Sweden, 'uk' for United Kingdom, 'us' for United States... </p>
   <p>You can get the full list on <a href='https://github.com/KelkooGroup/woocommerce-kelkoogroup-salestracking#country' target='_blank'>https://github.com/KelkooGroup/woocommerce-kelkoogroup-salestracking#country</a> </p>",
-'wordpress' );
+'kelkoogroup-sales-tracking' );
 }
 
 function kelkoogroup_salestracking_settings_multicomid_section_callback(  ) {
     echo __( "<p>      Multi merchant information : If you need to configure multiple merchant information (you have multiple Merchant Identifier/Country), you can copy/paste the sample and update it.",
-'wordpress' );
+'kelkoogroup-sales-tracking' );
 }
 
 function kelkoogroup_salestracking_options_page(  ) {
