@@ -67,13 +67,13 @@ final class Kelkoogroup_SalesTracking {
          <script type="text/javascript">
              _kkstrack = {
 	      <?php if ($options['kelkoogroup_salestracking_multicomid'] == FALSE) { ?>
-	       merchantInfo: [{ country:"<?php echo $options['kelkoogroup_salestracking_country'];?>", merchantId:"<?php echo $options['kelkoogroup_salestracking_comid'];?>" }],
+	       merchantInfo: [{ country:"<?php echo esc_js( $options['kelkoogroup_salestracking_country'] );?>", merchantId:"<?php echo esc_js( $options['kelkoogroup_salestracking_comid'] );?>" }],
               <?php } else { ?>
-               merchantInfo: [<?php echo $options['kelkoogroup_salestracking_multicomid'];?>],
+               merchantInfo: [<?php echo esc_js( $options['kelkoogroup_salestracking_multicomid'] );?>],
               <?php } ?>
-	       orderValue: '<?php echo $order->get_total();?>',
-               orderId: '<?php echo $order->get_order_number();?>',
-               basket: <?php echo json_encode($productsKelkoo);?>
+	       orderValue: '<?php echo esc_js( $order )->get_total();?>',
+               orderId: '<?php echo esc_js( $order )->get_order_number();?>',
+               basket: <?php echo esc_js( json_encode($productsKelkoo) );?>
             };
              (function() {
                var s = document.createElement('script');

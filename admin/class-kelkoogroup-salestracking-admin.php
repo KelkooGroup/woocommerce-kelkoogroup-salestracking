@@ -75,21 +75,21 @@ function kelkoogroup_salestracking_settings_init(  ) {
 function kelkoogroup_salestracking_country_render(  ) {
     $options = get_option( 'kelkoogroup_salestracking_settings' );
     ?>
-    <input type='text' name='kelkoogroup_salestracking_settings[kelkoogroup_salestracking_country]' value='<?php echo $options['kelkoogroup_salestracking_country']; ?>'>
+    <input type='text' name='kelkoogroup_salestracking_settings[kelkoogroup_salestracking_country]' value='<?php echo esc_html( $options['kelkoogroup_salestracking_country'] ); ?>'>
     <?php
 }
 
 function kelkoogroup_salestracking_comid_render(  ) {
     $options = get_option( 'kelkoogroup_salestracking_settings' );
     ?>
-    <input type='text' name='kelkoogroup_salestracking_settings[kelkoogroup_salestracking_comid]' value='<?php echo $options['kelkoogroup_salestracking_comid']; ?>'>
+    <input type='text' name='kelkoogroup_salestracking_settings[kelkoogroup_salestracking_comid]' value='<?php echo esc_html( $options['kelkoogroup_salestracking_comid'] ); ?>'>
     <?php
 }
 
 function kelkoogroup_salestracking_multicomid_render(  ) {
     $options = get_option( 'kelkoogroup_salestracking_settings' );
     ?>
-    <input type='text' name='kelkoogroup_salestracking_settings[kelkoogroup_salestracking_multicomid]' value='<?php echo $options['kelkoogroup_salestracking_multicomid']; ?>'>
+    <input type='text' name='kelkoogroup_salestracking_settings[kelkoogroup_salestracking_multicomid]' value='<?php echo esc_html( $options['kelkoogroup_salestracking_multicomid'] ); ?>'>
 <i>{country: <strong>"</strong>nl<strong>"</strong>, merchantId: <strong>"</strong>123<strong>"</strong>}, {country: <strong>"</strong>nb<strong>"</strong>, merchantId: <strong>"</strong>345<strong>"</strong>}</i>
     <?php
 }
