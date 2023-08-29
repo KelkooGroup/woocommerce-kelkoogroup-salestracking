@@ -71,8 +71,8 @@ final class Kelkoogroup_SalesTracking {
               <?php } else { ?>
                merchantInfo: [<?php echo esc_js( $options['kelkoogroup_salestracking_multicomid'] );?>],
               <?php } ?>
-	       orderValue: '<?php echo esc_js( $order )->get_total();?>',
-               orderId: '<?php echo esc_js( $order )->get_order_number();?>',
+	       orderValue: '<?php echo esc_js( $order ->get_total());?>',
+               orderId: '<?php echo esc_js( $order ->get_order_number());?>',
                basket: <?php echo esc_js( json_encode($productsKelkoo) );?>
             };
              (function() {

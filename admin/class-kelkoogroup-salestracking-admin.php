@@ -95,11 +95,11 @@ function kelkoogroup_salestracking_multicomid_render(  ) {
 }
 
 function kelkoogroup_salestracking_settings_intro_section_callback(  ) {
-    echo __( "<p>Kelkoogroup Sales Tracking requires a few configuration.</p>",'kelkoogroup-sales-tracking' );
+    echo esc_html__( "<p>Kelkoogroup Sales Tracking requires a few configuration.</p>",'kelkoogroup-sales-tracking' );
 }
 
 function kelkoogroup_salestracking_settings_onecampaign_section_callback(  ) {
-    echo __( "<p>          Merchant Identifier: This is the unique ID representing your shop within the Kelkoo system. You got it by email at your subscription, else to recover it you can ask your Kelkoogroup account manager. </p>
+    echo esc_html__( "<p>          Merchant Identifier: This is the unique ID representing your shop within the Kelkoo system. You got it by email at your subscription, else to recover it you can ask your Kelkoogroup account manager. </p>
  <p>          Country is the 2-letter country code for the country on which your products are listed on Kelkoo:
  'at' for Austria, 'be' for Belgium, 'br' for Brazil, 'ch' for Switzerland, 'cz' for Czech Republic, 'de' for Germany,
  'dk' for Denmark, 'es' for Spain, 'fi' for Finland, 'fr' for France, 'ie ' for Ireland, 'it' for Italy, 'mx' for Mexico,
@@ -110,7 +110,7 @@ function kelkoogroup_salestracking_settings_onecampaign_section_callback(  ) {
 }
 
 function kelkoogroup_salestracking_settings_multicomid_section_callback(  ) {
-    echo __( "<p>      Multi merchant information : If you need to configure multiple merchant information (you have multiple Merchant Identifier/Country), you can copy/paste the sample and update it.",
+    echo esc_html__( "<p>      Multi merchant information : If you need to configure multiple merchant information (you have multiple Merchant Identifier/Country), you can copy/paste the sample and update it.",
 'kelkoogroup-sales-tracking' );
 }
 
