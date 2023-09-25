@@ -3,7 +3,7 @@
  * Plugin Name:       Kelkoogroup Sales Tracking
  * Description:       Plugin to contain Kelkoogroup sales tracking customisation for Woocommerce
  * Plugin URI:        https://github.com/KelkooGroup/woocommerce-kelkoogroup-salestracking
- * Version:           1.0.8
+ * Version:           1.0.9
  * Author:            Kelkoo Group
  * Author URI:        https://www.kelkoogroup.com/
  * License:           GPL-2.0+
@@ -22,7 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Main Kelkoogroup_SalesTracking Class
  *
  * @class Kelkoogroup_SalesTracking
- * @version	1.0.8
+ * @version	1.0.9
  * @since 1.0.0
  * @package	Kelkoogroup_SalesTracking
  */
@@ -73,7 +73,7 @@ final class Kelkoogroup_SalesTracking {
               <?php } ?>
 	       orderValue: '<?php echo esc_js( $order ->get_total());?>',
                orderId: '<?php echo esc_js( $order ->get_order_number());?>',
-               basket: <?php echo esc_js( json_encode($productsKelkoo) );?>
+               basket: <?php echo wp_strip_all_tags( json_encode($productsKelkoo) );?>
             };
              (function() {
                var s = document.createElement('script');
