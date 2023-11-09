@@ -2,8 +2,8 @@
 Contributors: kelkoogroup 
 Tags: kelkoogroup, sales, tracking, php, woocommerce
 Requires at least: 4.0.0
-Tested up to: 6.2
-Stable tag: 1.0.10
+Tested up to: 6.4
+Stable tag: 1.0.11
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -65,6 +65,9 @@ Once your subscription has been done, you will be able to access your Merchant E
 6. Go to the "Settings > Kelkoogroup" and set country and your company associated to your Kelkoogroup merchant account 
 
 == Changelog ==
+
+= 1.0.11 =
+* Tested up to 6.4
 
 = 1.0.10 =
 * Fix issue with merchantInfos escaping
