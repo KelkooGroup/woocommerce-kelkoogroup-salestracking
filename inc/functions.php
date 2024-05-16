@@ -20,7 +20,11 @@ function kelkoogroup_salestracking_call_leadtag_js() {
 }
 
 /**
- * Store identifiers from URL parameters
+ * Stores identifiers from URL parameters in transients.
+ *
+ * This function iterates over predefined URL parameters and their associated transient keys.
+ * If any of these parameters are present in the URL, their values are stored in corresponding transients
+ * with a lifespan of 365 days.
  */
 function kelkoogroup_salestracking_store_identifiers_from_url() {
     // Define an array of parameters and their associated keys

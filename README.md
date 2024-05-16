@@ -17,6 +17,13 @@ To install the Kelkoo Group sales tracking plugin, you can have a look at [Kelko
 5. Complete the form with information related to your kelkoo group subscription
 6. Done!
 
+*Installation via Wordpress Cli*
+1. Log in to your site with SSH
+2. cd to your sites root wordpress folder
+3. Run wp plugin install ```wp plugin install kelkoogroup-sales-tracking --activate```
+4. On plugin page go to “Settings” and click on the “Kelkoogroup” link
+5. Complete the form with information related to your kelkoo group subscription
+6. Done!
 
 *Installation from source*
 1. Go to folder `/wp-content/plugins` and unzip `woocommerce-kelkoogroup-sales-tracking` file
@@ -31,7 +38,6 @@ To install the Kelkoo Group sales tracking plugin, you can have a look at [Kelko
 3. On plugin page go to “Settings” and click on the “Kelkoogroup” link
 4. Complete the form with information related to your kelkoo group subscription
 5. Done!
-
 
 ## Settings
 - Configure the kelkoogroup setting via Settings > Kelkoogroup

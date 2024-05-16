@@ -4,6 +4,7 @@
  * Description:       Plugin to contain Kelkoogroup sales tracking customisation for Woocommerce
  * Plugin URI:        https://github.com/KelkooGroup/woocommerce-kelkoogroup-salestracking
  * Version:           2.0.0
+
  * Author:            Kelkoo Group
  * Author URI:        https://www.kelkoogroup.com/
  * License:           GPL-2.0+
@@ -26,7 +27,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @since 1.0.0
  * @package	Kelkoogroup_SalesTracking
  */
-final class Kelkoogroup_SalesTracking {
+class Kelkoogroup_SalesTracking {
 
 	/**
 	 * Set up the plugin
@@ -84,8 +85,9 @@ final class Kelkoogroup_SalesTracking {
                x.parentNode.insertBefore(s, x);
              })();
           </script>
-         <?php
-         $this->kelkoogroup_salestracking_send_server_side_request($options, $order, $productsKelkoo);
+          <?php
+            // Direct server-side tracking with non-blocking HTTP request
+            $this->kelkoogroup_salestracking_send_server_side_request($options, $order, $productsKelkoo);
         endif;
          }
     }
@@ -94,70 +96,59 @@ final class Kelkoogroup_SalesTracking {
     /**
       * Function to send the sale with server2server call
     */
-    private function kelkoogroup_salestracking_send_server_side_request($options, $order, $productsKelkoo) {
-      // Récupérer l'URL de référence actuelle
-      $referer = wp_get_referer();
-
-      // Ajouter le referer aux en-têtes de la requête
-      $headers = array(
-          'Referer' => $referer
-      );
-
-      $comIds = array();
-      $multicomid = $options['kelkoogroup_salestracking_multicomid'];
-      if ($multicomid) {
-        $multicomid_json = preg_replace('/([{,]\s*)([\'"])?(\w+)([\'"])?:/','$1"$3":', $multicomid);
-          $multicomid_array = json_decode('['.$multicomid_json.']', true);
-          foreach ($multicomid_array as $com) {
-              $comIds[] = array(
-                  'country' => $com['country'],
-                  'merchantId' => $com['merchantId']
-              );
-          }
-      } else {
-          $comIds[] = array(
-              'country' => $options['kelkoogroup_salestracking_country'],
-              'merchantId' => $options['kelkoogroup_salestracking_comid']
-          );
-      }
-
-      $kelkoo_id = get_transient('kelkoogroup_salestracking_kk_identifier');
-      $gclid_id = get_transient('kelkoogroup_salestracking_gclid_identifier');
-      $msclkid_id = get_transient('kelkoogroup_salestracking_msclkid_identifier');
-
-      foreach ($comIds as $com) {
-          $url = 'https://s.kelkoogroup.net/st';
-          $params = array(
-              'country' => $com['country'],
-              'orderId' => $order->get_order_number(),
-              'comId' => $com['merchantId'],
-              'orderValue' => $order->get_total(),
-              'productsInfos' => $this->kelkoogroup_salestracking_encode_basket($productsKelkoo),
-              'saleId' => $this->kelkoogroup_salestracking_generate_sale_id(),
-              'kelkooId' => $kelkoo_id ?: null,
-              'gclid' => $gclid_id ?: null,
-              'msclkid' => $msclkid_id ?: null,
-              'source' => 'serverToServer'
-          );
-
-          $request_url = add_query_arg($params, $url);
-          $response = wp_remote_get($request_url, array(
-              'headers' => $headers
-          ));
-
-          if (is_wp_error($response)) {
-              error_log('Erreur lors de la requête HTTP : ' . $response->get_error_message());
-          } else {
-              $response_body = wp_remote_retrieve_body($response);
-          }
-      }
+    function kelkoogroup_salestracking_send_server_side_request($options, $order, $productsKelkoo, $attempt = 1) {
+        $max_attempts = 2;
+        $headers = array(
+            'Referer' => wp_get_referer()
+        );
+    
+        $campaigns = array();
+        $multicomid = $options['kelkoogroup_salestracking_multicomid'];
+        if ($multicomid) {
+            $multicomid_json = preg_replace('/([{,]\s*)([\'"])?(\w+)([\'"])?:/','$1"$3":', $multicomid);
+            $multicomid_array = json_decode('['.$multicomid_json.']', true);
+            foreach ($multicomid_array as $campaign) {
+                $campaigns[] = array(
+                    'country' => $campaign['country'],
+                    'merchantId' => $campaign['merchantId']
+                );
+            }
+        } else {
+            $campaigns[] = array(
+                'country' => $options['kelkoogroup_salestracking_country'],
+                'merchantId' => $options['kelkoogroup_salestracking_comid']
+            );
+        }
+    
+        // Send server call for each campaign
+        foreach ($campaigns as $campaign) {
+            $request_url = $this->kelkoogroup_salestracking_construct_kelkoogroup_request_url($order, $productsKelkoo, $campaign);
+            $response = wp_remote_get($request_url, array(
+                'headers' => $headers,
+                'blocking' => false,
+                'timeout' => 0.3 
+            ));
+    
+            // Check errors
+            if (is_wp_error($response)) {
+                error_log('Error during HTTP request : ' . $response->get_error_message());
+    
+                // Retry till the max of attempts
+                if ($attempt < $max_attempts) {
+                    $this->kelkoogroup_salestracking_send_server_side_request($options, $order, $productsKelkoo, $attempt + 1);
+                } else {
+                    error_log('Max retry attempts reached for order: ' . $order->get_order_number());
+                }
+            }
+        }
     }
 
+    // Function to generate the sale id
     function kelkoogroup_salestracking_generate_sale_id() {
       return mt_rand() / mt_getrandmax();
     }
 
-      // Function to encode basket items
+    // Function to encode basket items
     function kelkoogroup_salestracking_encode_basket($productsArray) {
         // Convert the PHP array to JSON
         $jsonData = json_encode($productsArray);
@@ -171,11 +162,48 @@ final class Kelkoogroup_SalesTracking {
         return $urlEncodedData;
     }
 
-      // Function to custom base64 encode data
+    // Function to custom base64 encode data
     function kelkoogroup_salestracking_custom_base64_encode($data) {
       return rtrim(strtr(base64_encode($data), '+/', '-_'), '=');
   }
-  
+
+     /**
+     * Construct the URL for the Kelkoogroup request
+     */
+    function kelkoogroup_salestracking_construct_kelkoogroup_request_url($order, $productsKelkoo, $campaign) {
+      $kelkoo_id = get_transient('kelkoogroup_salestracking_kk_identifier');
+      $gclid_id = get_transient('kelkoogroup_salestracking_gclid_identifier');
+      $msclkid_id = get_transient('kelkoogroup_salestracking_msclkid_identifier');
+
+      // Fallback to cookies if transients are not found
+      if (!$kelkoo_id) {
+        $kelkoo_id = isset($_COOKIE['kelkoogroup_salestracking_kk_identifier']) ? $_COOKIE['kelkoogroup_salestracking_kk_identifier'] : null;
+      }
+      if (!$gclid_id) {
+        $gclid_id = isset($_COOKIE['kelkoogroup_salestracking_gclid_identifier']) ? $_COOKIE['kelkoogroup_salestracking_gclid_identifier'] : null;
+      }
+      if (!$msclkid_id) {
+          $msclkid_id = isset($_COOKIE['kelkoogroup_salestracking_msclkid_identifier']) ? $_COOKIE['kelkoogroup_salestracking_msclkid_identifier'] : null;
+      }
+
+      $url = 'https://s.kelkoogroup.net/st';
+
+      $params = array(
+          'country' => $campaign['country'],
+          'orderId' => $order->get_order_number(),
+          'comId' => $campaign['merchantId'],
+          'orderValue' => $order->get_total(),
+          'productsInfos' => $this->kelkoogroup_salestracking_encode_basket($productsKelkoo),
+          'saleId' => $this->kelkoogroup_salestracking_generate_sale_id(),
+          'kelkooId' => $kelkoo_id ?: null,
+          'gclid' => $gclid_id ?: null,
+          'msclkid' => $msclkid_id ?: null,
+          'source' => 'serverToServer',
+          'ecommercePlatform' => 'woocommerce'
+      );
+
+      return add_query_arg($params, $url);
+  }
 
 
 } // End Class
