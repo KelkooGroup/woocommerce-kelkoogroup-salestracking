@@ -1,9 +1,9 @@
 === Kelkoogroup Salestracking ===
 Contributors: kelkoogroup 
 Tags: kelkoogroup, sales, tracking, php, woocommerce
-Requires at least: 3.0.0
-Tested up to: 5.6
-Stable tag: 1.0.5
+Requires at least: 4.0.0
+Tested up to: 6.5.3
+Stable tag: 2.0.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -46,6 +46,19 @@ To install the Kelkoo Group sales tracking plugin:
 5. Complete the form with information related to your kelkoo group subscription
 6. Done!
 
+
+*Installation via wordpress cli*
+
+1. Launch activation command through the wordpress-cli
+```
+wp plugin install kelkoogroup-sales-tracking --activate --path=/var/www/html
+```
+2. Login to your WordPress admin dashboard, go to Plugins, Click `Activate`
+3. On plugin page go to “Settings” and click on the “Kelkoogroup” link
+4. Complete the form with information related to your kelkoo group subscription
+5. Done!
+
+
 *Kelkoo Group settings*
 
 Once your subscription has been done, you will be able to access your Merchant Extranet Dashboard and retrieve the country code and comId information.
@@ -65,6 +78,27 @@ Once your subscription has been done, you will be able to access your Merchant E
 6. Go to the "Settings > Kelkoogroup" and set country and your company associated to your Kelkoogroup merchant account 
 
 == Changelog ==
+
+= 2.0.0 =
+* Implement S2S call
+
+= 1.0.11 =
+* Tested up to 6.4
+
+= 1.0.10 =
+* Fix issue with merchantInfos escaping
+
+= 1.0.9 =
+* Fix issue with basket escaping
+
+= 1.0.8 =
+* Fix small issues regarding escaping
+
+= 1.0.7 =
+* Improve plugin security and compatibility
+
+= 1.0.6 =
+* Update version and fix some documentation
 
 = 1.0.5 =
 * Update country parameter documentation
