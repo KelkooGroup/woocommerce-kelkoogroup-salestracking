@@ -1,0 +1,27 @@
+name: Create CI Branch
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  create_ci_branch:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+      
+    - name: Delete existing CI branch
+      run: |
+        git push --delete origin ci || true
+        git branch -D ci || true
+      
+    - name: Create CI branch
+      run: |
+        git checkout main
+        git checkout -b ci
+        git merge $(git branch -r --list 'origin/feature/*' | sed -e 's/^[ \t]*//' | cut -d'/' -f2-)
+        git merge main
+        git push origin ci
