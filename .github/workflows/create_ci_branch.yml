@@ -3,7 +3,8 @@ name: Create CI Branch
 on:
   push:
     branches:
-      - main
+      - 'bugfix/*'
+      - 'feature/*'
 
 jobs:
   create_ci_branch:
@@ -20,8 +21,8 @@ jobs:
       
     - name: Create CI branch
       run: |
-        git checkout main
+        git checkout master
         git checkout -b ci
-        git merge $(git branch -r --list 'origin/feature/*' | sed -e 's/^[ \t]*//' | cut -d'/' -f2-)
-        git merge main
+        git merge master
+        git merge $GITHUB_REF
         git push origin ci
