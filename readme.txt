@@ -53,18 +53,6 @@ To install the Kelkoo Group sales tracking plugin:
 5. Complete the form with information related to your kelkoo group subscription
 6. Done!
 
-
-*Installation via Wordpress Cli*
-
-1. Launch activation command through the wordpress-cli
-```
-wp plugin install kelkoogroup-sales-tracking --activate --path=/var/www/html
-```
-2. On plugin page go to “Settings” and click on the “Kelkoogroup” link
-3. Complete the form with information related to your kelkoo group subscription
-4. Done!
-
-
 *Kelkoo Group settings*
 
 Once your subscription has been done, you will be able to access your Merchant Extranet Dashboard and retrieve the country code and comId information.
