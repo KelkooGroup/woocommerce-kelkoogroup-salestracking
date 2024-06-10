@@ -1,0 +1,117 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - 'bugfix/*'
+      - 'feature/*'
+
+jobs:
+  merge-branches:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set Git identity
+        run: |
+          git config --global user.email "${GITHUB_ACTOR}@users.noreply.github.com"
+          git config --global user.name "${GITHUB_ACTOR}"
+
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0 # Ensure all branches and history are fetched
+
+      - name: Fetch all branches
+        run: git fetch --all
+
+      - name: Delete remote dev branch if exists
+        run: git push origin --delete dev || true
+
+      - name: Create dev branch from master
+        run: |
+          git checkout -b dev origin/master
+          git push origin dev --force
+
+      - name: Merge feature branch into dev
+        run: |
+          git checkout dev
+          git merge --no-ff ${{ github.event.ref }}
+          git push origin dev --force
+
+  build:
+    runs-on: ubuntu-latest
+    needs: merge-branches
+
+    services:
+      mysql:
+        image: mysql:5.7
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: CI
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping -h localhost" --health-interval=10s --health-timeout=5s --health-retries=3
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '7.4'
+        ini-values: error_reporting=-1
+    - name: Install and configure WordPress for Testing
+      run: |
+        ls -l
+        git clone --depth=1 --branch=trunk https://github.com/WordPress/wordpress-develop.git wordpress
+        cp wordpress/wp-tests-config-sample.php wordpress/wp-tests-config.php
+        sed -i "s/youremptytestdbnamehere/CI/" wordpress/wp-tests-config.php
+        sed -i "s/yourusernamehere/root/" wordpress/wp-tests-config.php
+        sed -i "s/yourpasswordhere/root/" wordpress/wp-tests-config.php
+        sed -i "s|localhost|127.0.0.1|" wordpress/wp-tests-config.php
+
+    - name: Install WordPress dependencies
+      run: |
+        cd wordpress/src
+        composer require wp-cli/wp-cli-bundle
+        ./vendor/bin/wp --version
+        ./vendor/bin/wp config create --dbname=CI --dbuser=root --dbpass=root --dbhost=127.0.0.1
+        ./vendor/bin/wp core install --url=http://localhost --title="Test Site" --admin_user=admin --admin_password=password --admin_email=admin@example.com --skip-email
+
+    - name: Copy plugin files on wordpress
+      run: |
+        rsync -av --exclude='wordpress' --exclude='.git' $GITHUB_WORKSPACE/ wordpress/src/wp-content/plugins/kelkoo-sales-tracking
+
+    - name: Install and Activate WooCommerce and KST plugins
+      run: |
+        cd wordpress/src
+        ./vendor/bin/wp plugin install woocommerce --activate
+        echo "Wordpress version:"
+        ./vendor/bin/wp core version
+        ./vendor/bin/wp plugin activate kelkoo-sales-tracking
+        echo
+        echo "Plugins installed:"
+        ./vendor/bin/wp plugin list
+        echo
+        echo "Tables presents :"
+        ./vendor/bin/wp db tables
+        
+    - name: Install PHPUnit and Polyfills
+      run: |
+        cd wordpress/src
+        if [ ! -f composer.json ]; then
+          echo '{}' > composer.json
+        fi
+        composer require --dev phpunit/phpunit yoast/phpunit-polyfills
+        ls -l vendor/yoast/phpunit-polyfills
+        find -iname phpunit
+
+    - name: Run plugin tests
+      env:
+        WP_RUN_CORE_TESTS: 0
+        WP_TESTS_PHPUNIT_POLYFILLS_PATH: ${{ github.workspace }}/wordpress/vendor/yoast/phpunit-polyfills
+      run: |
+        cd wordpress/src
+        echo "WP_RUN_CORE_TESTS=$WP_RUN_CORE_TESTS"
+        echo "WP_TESTS_PHPUNIT_POLYFILLS_PATH=$WP_TESTS_PHPUNIT_POLYFILLS_PATH"
+        ./vendor/bin/phpunit --bootstrap wp-content/plugins/kelkoo-sales-tracking/tests/bootstrap.php --configuration wp-content/plugins/kelkoo-sales-tracking/phpunit.xml.dist

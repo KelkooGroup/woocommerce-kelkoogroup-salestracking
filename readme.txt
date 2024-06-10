@@ -2,8 +2,8 @@
 Contributors: kelkoogroup 
 Tags: kelkoogroup, sales, tracking, php, woocommerce
 Requires at least: 4.0.0
-Tested up to: 6.4
-Stable tag: 1.0.11
+Tested up to: 6.5.3
+Stable tag: 2.0.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -36,6 +36,13 @@ To install the Kelkoo Group sales tracking plugin:
 5. Complete the form with information related to your kelkoo group subscription
 6. Done!
 
+*Installation via Wordpress Cli*
+1. Log in to your site with SSH
+2. cd to your sites root wordpress folder
+3. Run wp plugin install ```wp plugin install kelkoogroup-sales-tracking --activate```
+4. On plugin page go to “Settings” and click on the “Kelkoogroup” link
+5. Complete the form with information related to your kelkoo group subscription
+6. Done!
 
 *Installation via FTP Client Software*
 
@@ -45,6 +52,18 @@ To install the Kelkoo Group sales tracking plugin:
 4. On plugin page go to “Settings” and click on the “Kelkoogroup” link
 5. Complete the form with information related to your kelkoo group subscription
 6. Done!
+
+
+*Installation via Wordpress Cli*
+
+1. Launch activation command through the wordpress-cli
+```
+wp plugin install kelkoogroup-sales-tracking --activate --path=/var/www/html
+```
+2. On plugin page go to “Settings” and click on the “Kelkoogroup” link
+3. Complete the form with information related to your kelkoo group subscription
+4. Done!
+
 
 *Kelkoo Group settings*
 
@@ -65,6 +84,9 @@ Once your subscription has been done, you will be able to access your Merchant E
 6. Go to the "Settings > Kelkoogroup" and set country and your company associated to your Kelkoogroup merchant account 
 
 == Changelog ==
+
+= 2.0.0 =
+* Implement S2S call
 
 = 1.0.11 =
 * Tested up to 6.4
