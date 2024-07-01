@@ -73,6 +73,9 @@ Once your subscription has been done, you will be able to access your Merchant E
 
 == Changelog ==
 
+= 2.0.1 =
+* Remove retry mecanism
+
 = 2.0.0 =
 * Implement S2S call
 
