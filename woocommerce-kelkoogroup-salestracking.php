@@ -3,7 +3,7 @@
  * Plugin Name:       Kelkoogroup Sales Tracking
  * Description:       Plugin to contain Kelkoogroup sales tracking customisation for Woocommerce
  * Plugin URI:        https://github.com/KelkooGroup/woocommerce-kelkoogroup-salestracking
- * Version:           2.0.0
+ * Version:           2.0.1
 
  * Author:            Kelkoo Group
  * Author URI:        https://www.kelkoogroup.com/
@@ -23,7 +23,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Main Kelkoogroup_SalesTracking Class
  *
  * @class Kelkoogroup_SalesTracking
- * @version	2.0.0
+ * @version	2.0.1
  * @since 1.0.0
  * @package	Kelkoogroup_SalesTracking
  */
@@ -96,8 +96,7 @@ class Kelkoogroup_SalesTracking {
     /**
       * Function to send the sale with server2server call
     */
-    function kelkoogroup_salestracking_send_server_side_request($options, $order, $productsKelkoo, $attempt = 1) {
-        $max_attempts = 2;
+    function kelkoogroup_salestracking_send_server_side_request($options, $order, $productsKelkoo) {
         $headers = array(
             'Referer' => wp_get_referer()
         );
@@ -126,19 +125,12 @@ class Kelkoogroup_SalesTracking {
             $response = wp_remote_get($request_url, array(
                 'headers' => $headers,
                 'blocking' => false,
-                'timeout' => 0.3 
+                'timeout' => 0.7 
             ));
     
             // Check errors
             if (is_wp_error($response)) {
                 error_log('Error during HTTP request : ' . $response->get_error_message());
-    
-                // Retry till the max of attempts
-                if ($attempt < $max_attempts) {
-                    $this->kelkoogroup_salestracking_send_server_side_request($options, $order, $productsKelkoo, $attempt + 1);
-                } else {
-                    error_log('Max retry attempts reached for order: ' . $order->get_order_number());
-                }
             }
         }
     }
