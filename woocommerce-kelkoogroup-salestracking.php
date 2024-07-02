@@ -164,19 +164,24 @@ class Kelkoogroup_SalesTracking {
      * Construct the URL for the Kelkoogroup request
      */
     function kelkoogroup_salestracking_construct_kelkoogroup_request_url($order, $productsKelkoo, $campaign, $saleId) {
-      $kelkoo_id = get_transient('kelkoogroup_salestracking_kk_identifier');
-      $gclid_id = get_transient('kelkoogroup_salestracking_gclid_identifier');
-      $msclkid_id = get_transient('kelkoogroup_salestracking_msclkid_identifier');
 
-      // Fallback to cookies if transients are not found
+      if (is_user_logged_in()) {
+        $user_id = get_current_user_id();
+        // Get identifiers from user meta
+        $kelkoo_id = get_user_meta($user_id, 'kelkoogroup_salestracking_kelkooId', true);
+        $gclid_id = get_user_meta($user_id, 'kelkoogroup_salestracking_kk_gclid', true);
+        $msclkid_id = get_user_meta($user_id, 'kelkoogroup_salestracking_kk_msclkid', true);
+      }
+
+      // Fallback to cookies if user meta are not found
       if (!$kelkoo_id) {
-        $kelkoo_id = isset($_COOKIE['kelkoogroup_salestracking_kk_identifier']) ? $_COOKIE['kelkoogroup_salestracking_kk_identifier'] : null;
+        $kelkoo_id = isset($_COOKIE['kelkooId']) ? $_COOKIE['kelkooId'] : null;
       }
       if (!$gclid_id) {
-        $gclid_id = isset($_COOKIE['kelkoogroup_salestracking_gclid_identifier']) ? $_COOKIE['kelkoogroup_salestracking_gclid_identifier'] : null;
+        $gclid_id = isset($_COOKIE['kk_gclid']) ? $_COOKIE['kk_gclid'] : null;
       }
       if (!$msclkid_id) {
-          $msclkid_id = isset($_COOKIE['kelkoogroup_salestracking_msclkid_identifier']) ? $_COOKIE['kelkoogroup_salestracking_msclkid_identifier'] : null;
+          $msclkid_id = isset($_COOKIE['kk_msclkid']) ? $_COOKIE['kk_msclkid'] : null;
       }
 
       $url = 'https://s.kelkoogroup.net/st';
