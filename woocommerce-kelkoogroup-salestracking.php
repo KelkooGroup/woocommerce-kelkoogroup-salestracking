@@ -3,7 +3,7 @@
  * Plugin Name:       Kelkoogroup Sales Tracking
  * Description:       Plugin to contain Kelkoogroup sales tracking customisation for Woocommerce
  * Plugin URI:        https://github.com/KelkooGroup/woocommerce-kelkoogroup-salestracking
- * Version:           2.0.1
+ * Version:           2.0.2
 
  * Author:            Kelkoo Group
  * Author URI:        https://www.kelkoogroup.com/
@@ -23,7 +23,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Main Kelkoogroup_SalesTracking Class
  *
  * @class Kelkoogroup_SalesTracking
- * @version	2.0.1
+ * @version	2.0.2
  * @since 1.0.0
  * @package	Kelkoogroup_SalesTracking
  */
@@ -118,10 +118,11 @@ class Kelkoogroup_SalesTracking {
                 'merchantId' => $options['kelkoogroup_salestracking_comid']
             );
         }
+        $saleId = $this->kelkoogroup_salestracking_generate_sale_id();
     
         // Send server call for each campaign
         foreach ($campaigns as $campaign) {
-            $request_url = $this->kelkoogroup_salestracking_construct_kelkoogroup_request_url($order, $productsKelkoo, $campaign);
+            $request_url = $this->kelkoogroup_salestracking_construct_kelkoogroup_request_url($order, $productsKelkoo, $campaign, $saleId);
             $response = wp_remote_get($request_url, array(
                 'headers' => $headers,
                 'blocking' => false,
@@ -162,7 +163,7 @@ class Kelkoogroup_SalesTracking {
      /**
      * Construct the URL for the Kelkoogroup request
      */
-    function kelkoogroup_salestracking_construct_kelkoogroup_request_url($order, $productsKelkoo, $campaign) {
+    function kelkoogroup_salestracking_construct_kelkoogroup_request_url($order, $productsKelkoo, $campaign, $saleId) {
       $kelkoo_id = get_transient('kelkoogroup_salestracking_kk_identifier');
       $gclid_id = get_transient('kelkoogroup_salestracking_gclid_identifier');
       $msclkid_id = get_transient('kelkoogroup_salestracking_msclkid_identifier');
@@ -186,7 +187,7 @@ class Kelkoogroup_SalesTracking {
           'comId' => $campaign['merchantId'],
           'orderValue' => $order->get_total(),
           'productsInfos' => $this->kelkoogroup_salestracking_encode_basket($productsKelkoo),
-          'saleId' => $this->kelkoogroup_salestracking_generate_sale_id(),
+          'saleId' => $saleId,
           'kelkooId' => $kelkoo_id ?: null,
           'gclid' => $gclid_id ?: null,
           'msclkid' => $msclkid_id ?: null,

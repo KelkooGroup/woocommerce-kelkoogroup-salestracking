@@ -100,7 +100,6 @@ class Kelkoogroup_SalesTracking_Test extends WP_UnitTestCase {
             ->getMock();
 
         $this->plugin_instance->method('kelkoogroup_salestracking_encode_basket')->willReturn('VGVzdCBkYXRhIGZvciBlbmNvZGluZw');
-        $this->plugin_instance->method('kelkoogroup_salestracking_generate_sale_id')->willReturn('0.55');
 
         // Set up transcient value for the test
         set_transient('kelkoogroup_salestracking_kk_identifier', 'transient_kelkoo_id');
@@ -110,7 +109,7 @@ class Kelkoogroup_SalesTracking_Test extends WP_UnitTestCase {
 
         $expected_url = 'https://s.kelkoogroup.net/st?country=fr&orderId=12345&comId=123&orderValue=100&productsInfos=VGVzdCBkYXRhIGZvciBlbmNvZGluZw&saleId=0.55&kelkooId=transient_kelkoo_id&gclid=cookie_gclid_id&source=serverToServer&ecommercePlatform=woocommerce';
 
-        $constructed_url = $this->plugin_instance->kelkoogroup_salestracking_construct_kelkoogroup_request_url($order, $productsKelkoo, $campaign);
+        $constructed_url = $this->plugin_instance->kelkoogroup_salestracking_construct_kelkoogroup_request_url($order, $productsKelkoo, $campaign, "0.55");
 
         // Assert that the constructed URL matches the expected URL
         $this->assertEquals($expected_url, $constructed_url);
