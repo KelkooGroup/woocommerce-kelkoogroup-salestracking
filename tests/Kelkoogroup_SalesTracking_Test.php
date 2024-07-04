@@ -4,6 +4,7 @@
  */
 class Kelkoogroup_SalesTracking_Test extends WP_UnitTestCase {
 
+
     /**
      * Test if Kelkoogroup_SalesTracking class exists.
      */
@@ -19,25 +20,35 @@ class Kelkoogroup_SalesTracking_Test extends WP_UnitTestCase {
         $this->assertInstanceOf( 'Kelkoogroup_SalesTracking', $kelkoogroup_salestracking );
     }
 
+
     /**
-     * Tests if identifiers from URL parameters are stored in transients.
+     * Tests if identifiers from URL parameters are stored in user meta or cookies.
      */
     public function test_kelkoogroup_salestracking_store_identifiers_from_url() {
+
+        // Mock user login
+        $user_id = 1; // Assume a user ID for testing purposes
+        wp_set_current_user($user_id);
+
+        // Clear existing user meta and cookies
+        delete_user_meta($user_id, 'kelkoogroup_salestracking_kelkooId');
+        delete_user_meta($user_id, 'kelkoogroup_salestracking_kk_gclid');
+        delete_user_meta($user_id, 'kelkoogroup_salestracking_kk_msclkid');
+
+        // Set URL parameters
         $_GET = array(
             'kk' => 'test_kk_identifier',
             'gclid' => 'test_gclid_identifier',
-            'msclkid' => 'test_msclkid_identifier',
-            'other_param' => 'test_other_param'
+            'msclkid' => 'test_msclkid_identifier'
         );
 
         kelkoogroup_salestracking_store_identifiers_from_url();
 
-        $this->assertEquals('test_kk_identifier', get_transient('kelkoogroup_salestracking_kk_identifier'));
-        $this->assertEquals('test_gclid_identifier', get_transient('kelkoogroup_salestracking_gclid_identifier'));
-        $this->assertEquals('test_msclkid_identifier', get_transient('kelkoogroup_salestracking_msclkid_identifier'));
+        // Verify user meta storage
+        $this->assertEquals('test_kk_identifier', get_user_meta($user_id, 'kelkoogroup_salestracking_kelkooId', true));
+        $this->assertEquals('test_gclid_identifier', get_user_meta($user_id, 'kelkoogroup_salestracking_kk_gclid', true));
+        $this->assertEquals('test_msclkid_identifier', get_user_meta($user_id, 'kelkoogroup_salestracking_kk_msclkid', true));
 
-        // Vérifier si les valeurs des autres paramètres ne sont pas stockées dans les transients
-        $this->assertFalse(get_transient('kelkoogroup_salestracking_other_param_identifier'));
     }
 
 
@@ -94,29 +105,32 @@ class Kelkoogroup_SalesTracking_Test extends WP_UnitTestCase {
             'merchantId' => '123'
         );
 
-        // Mock get_transient function to return null for simplicity
         $this->plugin_instance = $this->getMockBuilder(Kelkoogroup_SalesTracking::class)
             ->setMethods(['kelkoogroup_salestracking_encode_basket', 'kelkoogroup_salestracking_generate_sale_id'])
             ->getMock();
 
         $this->plugin_instance->method('kelkoogroup_salestracking_encode_basket')->willReturn('VGVzdCBkYXRhIGZvciBlbmNvZGluZw');
 
-        // Set up transcient value for the test
-        set_transient('kelkoogroup_salestracking_kk_identifier', 'transient_kelkoo_id');
+        // Mock user and user meta
+        $user_id = 1; // Assume a user ID for testing purposes
+        wp_set_current_user($user_id);
+
+        // Set up user meta values for the test
+        update_user_meta($user_id, 'kelkoogroup_salestracking_kelkooId', 'meta_kelkoo_id');
 
         // Set up cookie values for the test
-        $_COOKIE['kelkoogroup_salestracking_gclid_identifier'] = 'cookie_gclid_id';
+        $_COOKIE['kk_gclid'] = 'cookie_gclid_id';
 
-        $expected_url = 'https://s.kelkoogroup.net/st?country=fr&orderId=12345&comId=123&orderValue=100&productsInfos=VGVzdCBkYXRhIGZvciBlbmNvZGluZw&saleId=0.55&kelkooId=transient_kelkoo_id&gclid=cookie_gclid_id&source=serverToServer&ecommercePlatform=woocommerce';
+        $expected_url = 'https://s.kelkoogroup.net/st?country=fr&orderId=12345&comId=123&orderValue=100&productsInfos=VGVzdCBkYXRhIGZvciBlbmNvZGluZw&saleId=0.55&kelkooId=meta_kelkoo_id&gclid=cookie_gclid_id&source=serverToServer&ecommercePlatform=woocommerce';
 
         $constructed_url = $this->plugin_instance->kelkoogroup_salestracking_construct_kelkoogroup_request_url($order, $productsKelkoo, $campaign, "0.55");
 
         // Assert that the constructed URL matches the expected URL
         $this->assertEquals($expected_url, $constructed_url);
 
-        // Cleanup transcient and cookies
-        unset($_COOKIE['kelkoogroup_salestracking_gclid_identifier']);
-        delete_transient('kelkoogroup_salestracking_kk_identifier');
+        // Cleanup meta and cookies
+        unset($_COOKIE['kk_gclid']);
+        delete_user_meta($user_id, 'kelkoogroup_salestracking_kelkooId');
     }
 
     /**
