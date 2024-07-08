@@ -11,6 +11,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
+/**
+ * Add lead tag
+ */
+function kelkoogroup_salestracking_call_leadtag_js() {
+    echo '<script async="true" type="text/javascript" src="https://s.kk-resources.com/leadtag.js" ></script>';
+}
 
 /**
  * Stores identifiers from URL parameters in user meta or cookies.
@@ -84,8 +90,14 @@ function kelkoogroup_salestracking_restore_identifiers_from_cookies($user_login,
  * @param string $domain  The (sub)domain that the cookie is available to.
  */
 function kelkoogroup_salestracking_setcookie($name, $value, $expire, $path, $domain) {
-    setcookie($name, $value, $expire, $path, $domain);
+    setcookie($name, $value, [
+        'expires' => $expire,
+        'path' => $path,
+        'domain' => $domain,
+        'samesite' => 'Strict'
+    ]);
 }
 
+add_action( 'wp_head', 'kelkoogroup_salestracking_call_leadtag_js' );
 add_action('init', 'kelkoogroup_salestracking_store_identifiers_from_url');
 add_action('wp_login', 'kelkoogroup_salestracking_restore_identifiers_from_cookies', 10, 2);
