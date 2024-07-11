@@ -3,7 +3,7 @@
  * Plugin Name:       Kelkoogroup Sales Tracking
  * Description:       Plugin to contain Kelkoogroup sales tracking customisation for Woocommerce
  * Plugin URI:        https://github.com/KelkooGroup/woocommerce-kelkoogroup-salestracking
- * Version:           2.0.4
+ * Version:           2.0.5
 
  * Author:            Kelkoo Group
  * Author URI:        https://www.kelkoogroup.com/
@@ -23,7 +23,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Main Kelkoogroup_SalesTracking Class
  *
  * @class Kelkoogroup_SalesTracking
- * @version	2.0.4
+ * @version	2.0.5
  * @since 1.0.0
  * @package	Kelkoogroup_SalesTracking
  */
@@ -157,7 +157,7 @@ class Kelkoogroup_SalesTracking {
 
     // Function to custom base64 encode data
     function kelkoogroup_salestracking_custom_base64_encode($data) {
-      return rtrim(strtr(base64_encode($data), '+/', '-_'), '=');
+      return strtr(base64_encode($data), '+/', '-_');
   }
 
      /**
@@ -198,7 +198,7 @@ class Kelkoogroup_SalesTracking {
           'msclkid' => $msclkid_id ?: null,
           'source' => 'serverToServer',
           'ecommercePlatform' => 'woocommerce',
-          'plgVersion' => '2.0.4'
+          'plgVersion' => '2.0.5'
       );
 
       return add_query_arg($params, $url);
