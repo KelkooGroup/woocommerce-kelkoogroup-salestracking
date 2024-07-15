@@ -121,7 +121,7 @@ class Kelkoogroup_SalesTracking_Test extends WP_UnitTestCase {
         // Set up cookie values for the test
         $_COOKIE['kk_gclid'] = 'cookie_gclid_id';
 
-        $expected_url = 'https://s.kelkoogroup.net/st?country=fr&orderId=12345&comId=123&orderValue=100&productsInfos=VGVzdCBkYXRhIGZvciBlbmNvZGluZw&saleId=0.55&kelkooId=meta_kelkoo_id&gclid=cookie_gclid_id&source=serverToServer&ecommercePlatform=woocommerce&plgVersion=2.0.4';
+        $expected_url = 'https://s.kelkoogroup.net/st?country=fr&orderId=12345&comId=123&orderValue=100&productsInfos=VGVzdCBkYXRhIGZvciBlbmNvZGluZw&saleId=0.55&kelkooId=meta_kelkoo_id&gclid=cookie_gclid_id&source=serverToServer&ecommercePlatform=woocommerce&plgVersion=2.0.5';
 
         $constructed_url = $this->plugin_instance->kelkoogroup_salestracking_construct_kelkoogroup_request_url($order, $productsKelkoo, $campaign, "0.55");
 
@@ -157,7 +157,7 @@ class Kelkoogroup_SalesTracking_Test extends WP_UnitTestCase {
 
         // Expected encoded basket value
         $expected_json = '[{"productname":"Product 1","productid":1,"quantity":2,"price":10},{"productname":"Product 2","productid":2,"quantity":1,"price":20}]';
-        $expected_base64 = 'W3sicHJvZHVjdG5hbWUiOiJQcm9kdWN0IDEiLCJwcm9kdWN0aWQiOjEsInF1YW50aXR5IjoyLCJwcmljZSI6MTB9LHsicHJvZHVjdG5hbWUiOiJQcm9kdWN0IDIiLCJwcm9kdWN0aWQiOjIsInF1YW50aXR5IjoxLCJwcmljZSI6MjB9XQ';
+        $expected_base64 = 'W3sicHJvZHVjdG5hbWUiOiJQcm9kdWN0IDEiLCJwcm9kdWN0aWQiOjEsInF1YW50aXR5IjoyLCJwcmljZSI6MTB9LHsicHJvZHVjdG5hbWUiOiJQcm9kdWN0IDIiLCJwcm9kdWN0aWQiOjIsInF1YW50aXR5IjoxLCJwcmljZSI6MjB9XQ==';
         $expected_encoded_basket = urlencode($expected_base64);
 
         // Assert that the encoded basket matches the expected value
@@ -174,7 +174,7 @@ class Kelkoogroup_SalesTracking_Test extends WP_UnitTestCase {
         $encoded_data = $this->plugin_instance->kelkoogroup_salestracking_custom_base64_encode($data);
 
         // Expected encoded data using custom base64 encoding
-        $expected_data = 'VGVzdCBkYXRhIGZvciBlbmNvZGluZw';
+        $expected_data = 'VGVzdCBkYXRhIGZvciBlbmNvZGluZw==';
         // Assert that the custom base64 encoded data matches the expected data
         $this->assertEquals($expected_data, $encoded_data);
     }
