@@ -16,7 +16,7 @@ jobs:
           git config --global user.name "${GITHUB_ACTOR}"
 
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0 # Ensure all branches and history are fetched
 
@@ -53,7 +53,7 @@ jobs:
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v7
 
     - name: Set up PHP
       uses: shivammathur/setup-php@v2
