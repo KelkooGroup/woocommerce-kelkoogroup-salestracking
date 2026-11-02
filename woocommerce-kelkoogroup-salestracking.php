@@ -13,7 +13,7 @@
  * Requires PHP:      7.4
  * Tested up to:      7.0
  * WC requires at least: 3.0.0
- * WC tested up to:   10.9
+ * WC tested up to:   11.2
  *
  * @package Kelkoogroup_SalesTracking
  */
@@ -142,15 +142,11 @@ class Kelkoogroup_SalesTracking {
         // Send server call for each campaign
         foreach ($campaigns as $campaign) {
             $request_url = $this->kelkoogroup_salestracking_construct_kelkoogroup_request_url($order, $productsKelkoo, $campaign, $saleId);
-            // TEMPORARY debug logging while diagnosing TT-4411 on the k8s dev environment, remove before merge.
-            error_log('KST DEBUG: sending server-side tracking request to ' . $request_url);
             $response = wp_remote_get($request_url, array(
                 'headers' => $headers,
                 'blocking' => false,
                 'timeout' => 0.7
             ));
-            error_log('KST DEBUG: server-side tracking response: ' . print_r($response, true));
-
             // Check errors
             if (is_wp_error($response)) {
                 error_log('Error during HTTP request : ' . $response->get_error_message());

@@ -5,7 +5,7 @@ Requires at least: 4.0.0
 Requires PHP: 7.4
 Tested up to: 7.0
 WC requires at least: 3.0.0
-WC tested up to: 10.9
+WC tested up to: 11.2
 Stable tag: 2.1.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -79,7 +79,7 @@ Once your subscription has been done, you will be able to access your Merchant E
 * Fix duplicate sale tracking on the order-received page (now tracked once per order)
 * Declare compatibility with WooCommerce High-Performance Order Storage
 * Validate click identifiers (kelkooId, gclid, msclkid) before building the tracking request
-* Tested up to WordPress 7.0 / WooCommerce 10.9, raise minimum PHP to 7.4
+* Tested up to WordPress 7.0 / WooCommerce 11.2, raise minimum PHP to 7.4
 
 = 2.0.5 =
 * Fix productInfos base64 encoded
