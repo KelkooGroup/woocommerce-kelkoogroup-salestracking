@@ -3,14 +3,17 @@
  * Plugin Name:       Kelkoogroup Sales Tracking
  * Description:       Plugin to contain Kelkoogroup sales tracking customisation for Woocommerce
  * Plugin URI:        https://github.com/KelkooGroup/woocommerce-kelkoogroup-salestracking
- * Version:           2.0.5
+ * Version:           2.1.0
 
  * Author:            Kelkoo Group
  * Author URI:        https://www.kelkoogroup.com/
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
  * Requires at least: 3.0.0
- * Tested up to:      6.5.3
+ * Requires PHP:      7.4
+ * Tested up to:      7.0
+ * WC requires at least: 3.0.0
+ * WC tested up to:   10.9
  *
  * @package Kelkoogroup_SalesTracking
  */
@@ -19,11 +22,18 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
+// Declare compatibility with WooCommerce's High-Performance Order Storage (custom order tables).
+add_action( 'before_woocommerce_init', function() {
+	if ( class_exists( \Automattic\WooCommerce\Utilities\FeaturesUtil::class ) ) {
+		\Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'custom_order_tables', __FILE__, true );
+	}
+} );
+
 /**
  * Main Kelkoogroup_SalesTracking Class
  *
  * @class Kelkoogroup_SalesTracking
- * @version	2.0.5
+ * @version	2.1.0
  * @since 1.0.0
  * @package	Kelkoogroup_SalesTracking
  */
@@ -53,15 +63,21 @@ class Kelkoogroup_SalesTracking {
     if( class_exists( 'WC_Order' ) ) {
         $order=new WC_Order($orderId);
         if ( $order ) :
+            // Guard against woocommerce_thankyou firing on every render of the order-received
+            // page (back navigation, refresh, tab left open), which was sending the sale
+            // multiple times.
+            if ( $order->get_meta( '_kelkoogroup_salestracking_tracked', true ) ) {
+                return;
+            }
             $options = get_option( 'kelkoogroup_salestracking_settings' );
             $productsKelkoo=array();
             $items = $order->get_items( apply_filters( 'woocommerce_purchase_order_item_types', 'line_item' ));
             foreach ( $items as $item ) {
-                $product = json_decode($item->get_product());
-                $productKelkoo=array('productname'=>$product->name,
-               'productid'=>$product->id,
+                $product = $item->get_product();
+                $productKelkoo=array('productname'=>$product->get_name(),
+               'productid'=>$product->get_id(),
                'quantity'=>$item->get_quantity(),
-               'price'=>$product->price);
+               'price'=>$product->get_price());
                 array_push($productsKelkoo,$productKelkoo);
             }
          ?>
@@ -88,6 +104,9 @@ class Kelkoogroup_SalesTracking {
           <?php
             // Direct server-side tracking with non-blocking HTTP request
             $this->kelkoogroup_salestracking_send_server_side_request($options, $order, $productsKelkoo);
+
+            $order->update_meta_data( '_kelkoogroup_salestracking_tracked', true );
+            $order->save();
         endif;
          }
     }
@@ -160,6 +179,15 @@ class Kelkoogroup_SalesTracking {
       return strtr(base64_encode($data), '+/', '-_');
   }
 
+    // Function to validate a click identifier (kelkooId, gclid, msclkid) before it is used to
+    // build a URL with add_query_arg(), which does not encode its values.
+    function kelkoogroup_salestracking_sanitize_identifier($value) {
+        if ( empty( $value ) || ! is_string( $value ) ) {
+            return null;
+        }
+        return preg_match( '/^[\w.-]+$/', $value ) ? $value : null;
+    }
+
      /**
      * Construct the URL for the Kelkoogroup request
      */
@@ -184,6 +212,13 @@ class Kelkoogroup_SalesTracking {
           $msclkid_id = isset($_COOKIE['kk_msclkid']) ? $_COOKIE['kk_msclkid'] : null;
       }
 
+      // Identifiers come from user meta or cookies, both attacker-controlled: add_query_arg()
+      // does not urlencode its values, so an unvalidated value could inject extra query
+      // parameters into the tracking request. Reject anything that isn't a plausible click id.
+      $kelkoo_id = $this->kelkoogroup_salestracking_sanitize_identifier($kelkoo_id);
+      $gclid_id = $this->kelkoogroup_salestracking_sanitize_identifier($gclid_id);
+      $msclkid_id = $this->kelkoogroup_salestracking_sanitize_identifier($msclkid_id);
+
       $url = 'https://s.kelkoogroup.net/st';
 
       $params = array(
@@ -198,7 +233,7 @@ class Kelkoogroup_SalesTracking {
           'msclkid' => $msclkid_id ?: null,
           'source' => 'serverToServer',
           'ecommercePlatform' => 'woocommerce',
-          'plgVersion' => '2.0.5'
+          'plgVersion' => '2.1.0'
       );
 
       return add_query_arg($params, $url);
