@@ -69,11 +69,20 @@ class Kelkoogroup_SalesTracking {
             if ( $order->get_meta( '_kelkoogroup_salestracking_tracked', true ) ) {
                 return;
             }
+            // Mark as tracked immediately, before building/sending the request, to keep the
+            // window in which two near-simultaneous renders could both pass the check above
+            // as short as possible.
+            $order->update_meta_data( '_kelkoogroup_salestracking_tracked', true );
+            $order->save();
+
             $options = get_option( 'kelkoogroup_salestracking_settings' );
             $productsKelkoo=array();
             $items = $order->get_items( apply_filters( 'woocommerce_purchase_order_item_types', 'line_item' ));
             foreach ( $items as $item ) {
                 $product = $item->get_product();
+                if ( ! $product ) {
+                    continue;
+                }
                 $productKelkoo=array('productname'=>$product->get_name(),
                'productid'=>$product->get_id(),
                'quantity'=>$item->get_quantity(),
@@ -104,9 +113,6 @@ class Kelkoogroup_SalesTracking {
           <?php
             // Direct server-side tracking with non-blocking HTTP request
             $this->kelkoogroup_salestracking_send_server_side_request($options, $order, $productsKelkoo);
-
-            $order->update_meta_data( '_kelkoogroup_salestracking_tracked', true );
-            $order->save();
         endif;
          }
     }
@@ -181,7 +187,7 @@ class Kelkoogroup_SalesTracking {
     // Function to validate a click identifier (kelkooId, gclid, msclkid) before it is used to
     // build a URL with add_query_arg(), which does not encode its values.
     function kelkoogroup_salestracking_sanitize_identifier($value) {
-        if ( empty( $value ) || ! is_string( $value ) ) {
+        if ( ! is_string( $value ) || '' === $value ) {
             return null;
         }
         return preg_match( '/^[\w.-]+$/', $value ) ? $value : null;
@@ -216,9 +222,10 @@ class Kelkoogroup_SalesTracking {
       // Identifiers come from user meta or cookies, both attacker-controlled: add_query_arg()
       // does not urlencode its values, so an unvalidated value could inject extra query
       // parameters into the tracking request. Reject anything that isn't a plausible click id.
-      $kelkoo_id = $this->kelkoogroup_salestracking_sanitize_identifier($kelkoo_id);
-      $gclid_id = $this->kelkoogroup_salestracking_sanitize_identifier($gclid_id);
-      $msclkid_id = $this->kelkoogroup_salestracking_sanitize_identifier($msclkid_id);
+      list($kelkoo_id, $gclid_id, $msclkid_id) = array_map(
+          array($this, 'kelkoogroup_salestracking_sanitize_identifier'),
+          array($kelkoo_id, $gclid_id, $msclkid_id)
+      );
 
       $url = 'https://s.kelkoogroup.net/st';
 

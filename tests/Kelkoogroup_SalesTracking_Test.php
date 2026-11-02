@@ -202,6 +202,7 @@ class Kelkoogroup_SalesTracking_Test extends WP_UnitTestCase {
         $this->plugin_instance = new Kelkoogroup_SalesTracking();
 
         $this->assertEquals( 'abc123-def.456', $this->plugin_instance->kelkoogroup_salestracking_sanitize_identifier( 'abc123-def.456' ) );
+        $this->assertEquals( '0', $this->plugin_instance->kelkoogroup_salestracking_sanitize_identifier( '0' ) );
         $this->assertNull( $this->plugin_instance->kelkoogroup_salestracking_sanitize_identifier( 'abc&comId=999' ) );
         $this->assertNull( $this->plugin_instance->kelkoogroup_salestracking_sanitize_identifier( null ) );
         $this->assertNull( $this->plugin_instance->kelkoogroup_salestracking_sanitize_identifier( '' ) );
@@ -246,6 +247,46 @@ class Kelkoogroup_SalesTracking_Test extends WP_UnitTestCase {
         remove_filter( 'pre_http_request', $intercept_request );
 
         $this->assertEquals( 1, $request_count );
+    }
+
+    /**
+     * Test that kelkoogroup_salestracking_woocommerce_thankyou does not fatal when an order
+     * item's product has since been deleted (get_product() returns false).
+     */
+    public function test_kelkoogroup_salestracking_woocommerce_thankyou_handles_deleted_product() {
+        update_option( 'kelkoogroup_salestracking_settings', array(
+            'kelkoogroup_salestracking_country' => 'fr',
+            'kelkoogroup_salestracking_comid' => '123',
+            'kelkoogroup_salestracking_multicomid' => false,
+        ) );
+
+        $product = new WC_Product_Simple();
+        $product->set_name( 'Test product' );
+        $product->set_regular_price( 10 );
+        $product->save();
+
+        $order = wc_create_order();
+        $order->add_product( $product, 1 );
+        $order->calculate_totals();
+        $order->save();
+
+        $product->delete( true );
+
+        $intercept_request = function() {
+            return array( 'body' => '', 'response' => array( 'code' => 200 ) );
+        };
+        add_filter( 'pre_http_request', $intercept_request );
+
+        $this->plugin_instance = new Kelkoogroup_SalesTracking();
+
+        ob_start();
+        $this->plugin_instance->kelkoogroup_salestracking_woocommerce_thankyou( $order->get_id() );
+        ob_end_clean();
+
+        remove_filter( 'pre_http_request', $intercept_request );
+
+        $reloaded_order = wc_get_order( $order->get_id() );
+        $this->assertTrue( (bool) $reloaded_order->get_meta( '_kelkoogroup_salestracking_tracked', true ) );
     }
 
 }
