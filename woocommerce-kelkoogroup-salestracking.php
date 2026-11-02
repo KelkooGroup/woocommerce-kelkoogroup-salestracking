@@ -193,6 +193,8 @@ class Kelkoogroup_SalesTracking {
      */
     function kelkoogroup_salestracking_construct_kelkoogroup_request_url($order, $productsKelkoo, $campaign, $saleId) {
 
+      $kelkoo_id = $gclid_id = $msclkid_id = null;
+
       if (is_user_logged_in()) {
         $user_id = get_current_user_id();
         // Get identifiers from user meta
