@@ -77,6 +77,9 @@ jobs:
         ./vendor/bin/wp --version
         ./vendor/bin/wp config create --dbname=CI --dbuser=root --dbpass=root --dbhost=127.0.0.1
         ./vendor/bin/wp core install --url=http://localhost --title="Test Site" --admin_user=admin --admin_password=password --admin_email=admin@example.com --skip-email
+        # The WP core test suite isolates uploads under wp-content/test-suite-uploads and
+        # expects the directory to already exist when a test case scans it.
+        mkdir -p wp-content/test-suite-uploads
 
     - name: Copy plugin files on wordpress
       run: |
