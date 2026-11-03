@@ -121,7 +121,7 @@ class Kelkoogroup_SalesTracking_Test extends WP_UnitTestCase {
         // Set up cookie values for the test
         $_COOKIE['kk_gclid'] = 'cookie_gclid_id';
 
-        $expected_url = 'https://s.kelkoogroup.net/st?country=fr&orderId=12345&comId=123&orderValue=100&productsInfos=VGVzdCBkYXRhIGZvciBlbmNvZGluZw&saleId=0.55&kelkooId=meta_kelkoo_id&gclid=cookie_gclid_id&source=serverToServer&ecommercePlatform=woocommerce&plgVersion=2.0.5';
+        $expected_url = 'https://s.kelkoogroup.net/st?country=fr&orderId=12345&comId=123&orderValue=100&productsInfos=VGVzdCBkYXRhIGZvciBlbmNvZGluZw&saleId=0.55&kelkooId=meta_kelkoo_id&gclid=cookie_gclid_id&source=serverToServer&ecommercePlatform=woocommerce&plgVersion=2.1.0';
 
         $constructed_url = $this->plugin_instance->kelkoogroup_salestracking_construct_kelkoogroup_request_url($order, $productsKelkoo, $campaign, "0.55");
 
@@ -192,6 +192,101 @@ class Kelkoogroup_SalesTracking_Test extends WP_UnitTestCase {
         // Assert that the sale ID is between 0 and 1
         $this->assertGreaterThanOrEqual(0, $sale_id);
         $this->assertLessThanOrEqual(1, $sale_id);
+    }
+
+    /**
+     * Test that kelkoogroup_salestracking_sanitize_identifier rejects values that could be
+     * used to inject extra query parameters into the tracking request.
+     */
+    public function test_kelkoogroup_salestracking_sanitize_identifier() {
+        $this->plugin_instance = new Kelkoogroup_SalesTracking();
+
+        $this->assertEquals( 'abc123-def.456', $this->plugin_instance->kelkoogroup_salestracking_sanitize_identifier( 'abc123-def.456' ) );
+        $this->assertEquals( '0', $this->plugin_instance->kelkoogroup_salestracking_sanitize_identifier( '0' ) );
+        $this->assertNull( $this->plugin_instance->kelkoogroup_salestracking_sanitize_identifier( 'abc&comId=999' ) );
+        $this->assertNull( $this->plugin_instance->kelkoogroup_salestracking_sanitize_identifier( null ) );
+        $this->assertNull( $this->plugin_instance->kelkoogroup_salestracking_sanitize_identifier( '' ) );
+    }
+
+    /**
+     * Test that kelkoogroup_salestracking_woocommerce_thankyou only sends the sale once per
+     * order, even if woocommerce_thankyou fires again on a later render of the same page
+     * (back navigation, refresh, tab left open).
+     */
+    public function test_kelkoogroup_salestracking_woocommerce_thankyou_tracks_once() {
+        update_option( 'kelkoogroup_salestracking_settings', array(
+            'kelkoogroup_salestracking_country' => 'fr',
+            'kelkoogroup_salestracking_comid' => '123',
+            'kelkoogroup_salestracking_multicomid' => false,
+        ) );
+
+        $product = new WC_Product_Simple();
+        $product->set_name( 'Test product' );
+        $product->set_regular_price( 10 );
+        $product->save();
+
+        $order = wc_create_order();
+        $order->add_product( $product, 1 );
+        $order->calculate_totals();
+        $order->save();
+
+        $request_count = 0;
+        $intercept_request = function() use ( &$request_count ) {
+            $request_count++;
+            return array( 'body' => '', 'response' => array( 'code' => 200 ) );
+        };
+        add_filter( 'pre_http_request', $intercept_request );
+
+        $this->plugin_instance = new Kelkoogroup_SalesTracking();
+
+        ob_start();
+        $this->plugin_instance->kelkoogroup_salestracking_woocommerce_thankyou( $order->get_id() );
+        $this->plugin_instance->kelkoogroup_salestracking_woocommerce_thankyou( $order->get_id() );
+        ob_end_clean();
+
+        remove_filter( 'pre_http_request', $intercept_request );
+
+        $this->assertEquals( 1, $request_count );
+    }
+
+    /**
+     * Test that kelkoogroup_salestracking_woocommerce_thankyou does not fatal when an order
+     * item's product has since been deleted (get_product() returns false).
+     */
+    public function test_kelkoogroup_salestracking_woocommerce_thankyou_handles_deleted_product() {
+        update_option( 'kelkoogroup_salestracking_settings', array(
+            'kelkoogroup_salestracking_country' => 'fr',
+            'kelkoogroup_salestracking_comid' => '123',
+            'kelkoogroup_salestracking_multicomid' => false,
+        ) );
+
+        $product = new WC_Product_Simple();
+        $product->set_name( 'Test product' );
+        $product->set_regular_price( 10 );
+        $product->save();
+
+        $order = wc_create_order();
+        $order->add_product( $product, 1 );
+        $order->calculate_totals();
+        $order->save();
+
+        $product->delete( true );
+
+        $intercept_request = function() {
+            return array( 'body' => '', 'response' => array( 'code' => 200 ) );
+        };
+        add_filter( 'pre_http_request', $intercept_request );
+
+        $this->plugin_instance = new Kelkoogroup_SalesTracking();
+
+        ob_start();
+        $this->plugin_instance->kelkoogroup_salestracking_woocommerce_thankyou( $order->get_id() );
+        ob_end_clean();
+
+        remove_filter( 'pre_http_request', $intercept_request );
+
+        $reloaded_order = wc_get_order( $order->get_id() );
+        $this->assertTrue( (bool) $reloaded_order->get_meta( '_kelkoogroup_salestracking_tracked', true ) );
     }
 
 }

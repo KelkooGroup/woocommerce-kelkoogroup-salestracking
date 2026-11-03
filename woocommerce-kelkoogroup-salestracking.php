@@ -3,14 +3,17 @@
  * Plugin Name:       Kelkoogroup Sales Tracking
  * Description:       Plugin to contain Kelkoogroup sales tracking customisation for Woocommerce
  * Plugin URI:        https://github.com/KelkooGroup/woocommerce-kelkoogroup-salestracking
- * Version:           2.0.5
+ * Version:           2.1.0
 
  * Author:            Kelkoo Group
  * Author URI:        https://www.kelkoogroup.com/
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
  * Requires at least: 3.0.0
- * Tested up to:      6.5.3
+ * Requires PHP:      7.4
+ * Tested up to:      7.1.4
+ * WC requires at least: 3.0.0
+ * WC tested up to:   11.2
  *
  * @package Kelkoogroup_SalesTracking
  */
@@ -19,11 +22,18 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
+// Declare compatibility with WooCommerce's High-Performance Order Storage (custom order tables).
+add_action( 'before_woocommerce_init', function() {
+	if ( class_exists( \Automattic\WooCommerce\Utilities\FeaturesUtil::class ) ) {
+		\Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'custom_order_tables', __FILE__, true );
+	}
+} );
+
 /**
  * Main Kelkoogroup_SalesTracking Class
  *
  * @class Kelkoogroup_SalesTracking
- * @version	2.0.5
+ * @version	2.1.0
  * @since 1.0.0
  * @package	Kelkoogroup_SalesTracking
  */
@@ -53,15 +63,30 @@ class Kelkoogroup_SalesTracking {
     if( class_exists( 'WC_Order' ) ) {
         $order=new WC_Order($orderId);
         if ( $order ) :
+            // Guard against woocommerce_thankyou firing on every render of the order-received
+            // page (back navigation, refresh, tab left open), which was sending the sale
+            // multiple times.
+            if ( $order->get_meta( '_kelkoogroup_salestracking_tracked', true ) ) {
+                return;
+            }
+            // Mark as tracked immediately, before building/sending the request, to keep the
+            // window in which two near-simultaneous renders could both pass the check above
+            // as short as possible.
+            $order->update_meta_data( '_kelkoogroup_salestracking_tracked', true );
+            $order->save();
+
             $options = get_option( 'kelkoogroup_salestracking_settings' );
             $productsKelkoo=array();
             $items = $order->get_items( apply_filters( 'woocommerce_purchase_order_item_types', 'line_item' ));
             foreach ( $items as $item ) {
-                $product = json_decode($item->get_product());
-                $productKelkoo=array('productname'=>$product->name,
-               'productid'=>$product->id,
+                $product = $item->get_product();
+                if ( ! $product ) {
+                    continue;
+                }
+                $productKelkoo=array('productname'=>$product->get_name(),
+               'productid'=>$product->get_id(),
                'quantity'=>$item->get_quantity(),
-               'price'=>$product->price);
+               'price'=>$product->get_price());
                 array_push($productsKelkoo,$productKelkoo);
             }
          ?>
@@ -126,9 +151,8 @@ class Kelkoogroup_SalesTracking {
             $response = wp_remote_get($request_url, array(
                 'headers' => $headers,
                 'blocking' => false,
-                'timeout' => 0.7 
+                'timeout' => 0.7
             ));
-    
             // Check errors
             if (is_wp_error($response)) {
                 error_log('Error during HTTP request : ' . $response->get_error_message());
@@ -160,10 +184,21 @@ class Kelkoogroup_SalesTracking {
       return strtr(base64_encode($data), '+/', '-_');
   }
 
+    // Function to validate a click identifier (kelkooId, gclid, msclkid) before it is used to
+    // build a URL with add_query_arg(), which does not encode its values.
+    function kelkoogroup_salestracking_sanitize_identifier($value) {
+        if ( ! is_string( $value ) || '' === $value ) {
+            return null;
+        }
+        return preg_match( '/^[\w.-]+$/', $value ) ? $value : null;
+    }
+
      /**
      * Construct the URL for the Kelkoogroup request
      */
     function kelkoogroup_salestracking_construct_kelkoogroup_request_url($order, $productsKelkoo, $campaign, $saleId) {
+
+      $kelkoo_id = $gclid_id = $msclkid_id = null;
 
       if (is_user_logged_in()) {
         $user_id = get_current_user_id();
@@ -184,6 +219,14 @@ class Kelkoogroup_SalesTracking {
           $msclkid_id = isset($_COOKIE['kk_msclkid']) ? $_COOKIE['kk_msclkid'] : null;
       }
 
+      // Identifiers come from user meta or cookies, both attacker-controlled: add_query_arg()
+      // does not urlencode its values, so an unvalidated value could inject extra query
+      // parameters into the tracking request. Reject anything that isn't a plausible click id.
+      list($kelkoo_id, $gclid_id, $msclkid_id) = array_map(
+          array($this, 'kelkoogroup_salestracking_sanitize_identifier'),
+          array($kelkoo_id, $gclid_id, $msclkid_id)
+      );
+
       $url = 'https://s.kelkoogroup.net/st';
 
       $params = array(
@@ -198,7 +241,7 @@ class Kelkoogroup_SalesTracking {
           'msclkid' => $msclkid_id ?: null,
           'source' => 'serverToServer',
           'ecommercePlatform' => 'woocommerce',
-          'plgVersion' => '2.0.5'
+          'plgVersion' => '2.1.0'
       );
 
       return add_query_arg($params, $url);
